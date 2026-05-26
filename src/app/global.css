@@ -1,0 +1,70 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+@import "nativewind/theme";
+
+@theme {
+    /* fonts */
+    --font-baloo: "BalooBhai2-Regular";
+    --font-baloo-bold: "BalooBhai2-Bold";
+    --font-baloo-medium: "BalooBhai2-Medium";
+    --font-baloo-semibold: "BalooBhai2-SemiBold";
+    --font-baloo-extrabold: "BalooBhai2-ExtraBold";
+
+    /* colors */
+    --color-gy-white: #effbf1;
+    --color-gy-black: #041006;
+    --color-gy-primary-100: #c4e2c6;
+    --color-gy-primary-200: #8bc08f;
+    --color-gy-primary-300: #559b5f;
+    --color-gy-primary-400: #2f7a3b;
+    --color-gy-primary-500: #185d23;
+    --color-gy-secondary-100: #fcf2cc;
+    --color-gy-secondary-200: #f9e79b;
+    --color-gy-secondary-300: #f6dc66;
+    --color-gy-secondary-400: #f4d232;
+    --color-gy-secondary-500: #f2ca02;
+    --color-gy-gray-50: #e8f3ea;
+    --color-gy-gray-100: #dde9df;
+    --color-gy-gray-200: #c3d4c6;
+    --color-gy-gray-300: #9aafa0;
+    --color-gy-gray-400: #73847a;
+    --color-gy-gray-500: #56675c;
+    --color-gy-gray-600: #3f4f45;
+    --color-gy-gray-700: #2c3b31;
+    --color-gy-gray-800: #1c2a20;
+    --color-gy-gray-900: #0f1a12;
+    --color-gy-product-red: #e20a0a;
+    --color-gy-product-yellow: #f2ba00;
+    --color-gy-product-black: #2c3b31;
+    --color-gy-product-green: #0aa81d;
+}
+
+:root {
+    --color-gy-white: #effbf1;
+    --color-gy-black: #041006;
+    --color-gy-primary-100: #c4e2c6;
+    --color-gy-primary-200: #8bc08f;
+    --color-gy-primary-300: #559b5f;
+    --color-gy-primary-400: #2f7a3b;
+    --color-gy-primary-500: #185d23;
+    --color-gy-secondary-100: #fcf2cc;
+    --color-gy-secondary-200: #f9e79b;
+    --color-gy-secondary-300: #f6dc66;
+    --color-gy-secondary-400: #f4d232;
+    --color-gy-secondary-500: #f2ca02;
+    --color-gy-gray-50: #e8f3ea;
+    --color-gy-gray-100: #dde9df;
+    --color-gy-gray-200: #c3d4c6;
+    --color-gy-gray-300: #9aafa0;
+    --color-gy-gray-400: #73847a;
+    --color-gy-gray-500: #56675c;
+    --color-gy-gray-600: #3f4f45;
+    --color-gy-gray-700: #2c3b31;
+    --color-gy-gray-800: #1c2a20;
+    --color-gy-gray-900: #0f1a12;
+    --color-gy-product-red: #e20a0a;
+    --color-gy-product-yellow: #f2ba00;
+    --color-gy-product-black: #2c3b31;
+    --color-gy-product-green: #0aa81d;
+}

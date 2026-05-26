@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "Baloo",
+        "Bhai",
+        "gesty",
+        "lightningcss",
+        "nativewind",
+        "yannlo"
+    ],
+    "css.lint.unknownAtRules": "ignore",
+    "files.associations": {
+        "*.css": "tailwindcss"
+    }
+}

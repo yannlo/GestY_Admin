@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "GestY",
+    "slug": "gesty",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "gesty",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.yannlo.gesty"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.yannlo.gesty"
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/BalooBhai2-Regular.ttf",
+            "./assets/fonts/BalooBhai2-Bold.ttf",
+            "./assets/fonts/BalooBhai2-Medium.ttf",
+            "./assets/fonts/BalooBhai2-SemiBold.ttf",
+            "./assets/fonts/BalooBhai2-ExtraBold.ttf"
+          ]
+        }
+      ]
+    ]
+  }
+}
