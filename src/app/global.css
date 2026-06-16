@@ -4,6 +4,7 @@
 @import "nativewind/theme";
 
 @theme {
+
     /* fonts */
     --font-baloo: "BalooBhai2-Regular";
     --font-baloo-bold: "BalooBhai2-Bold";
@@ -34,10 +35,17 @@
     --color-gy-gray-700: #2c3b31;
     --color-gy-gray-800: #1c2a20;
     --color-gy-gray-900: #0f1a12;
+
     --color-gy-product-red: #e20a0a;
     --color-gy-product-yellow: #f2ba00;
     --color-gy-product-black: #2c3b31;
     --color-gy-product-green: #0aa81d;
+
+    --color-gy-alert-info: #CFE8E8;
+    --color-gy-alert-success: #D1FFC8;
+    --color-gy-alert-warning: #FFF5BB;
+    --color-gy-alert-danger: #FFCDC8;
+
 }
 
 :root {
@@ -63,8 +71,15 @@
     --color-gy-gray-700: #2c3b31;
     --color-gy-gray-800: #1c2a20;
     --color-gy-gray-900: #0f1a12;
+    
     --color-gy-product-red: #e20a0a;
     --color-gy-product-yellow: #f2ba00;
     --color-gy-product-black: #2c3b31;
     --color-gy-product-green: #0aa81d;
+
+    --color-gy-alert-info: #CFE8E8;
+    --color-gy-alert-success: #D1FFC8;
+    --color-gy-alert-warning: #FFF5BB;
+    --color-gy-alert-danger: #FFCDC8;
+
 }

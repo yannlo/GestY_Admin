@@ -1,0 +1,140 @@
+import type React from "react";
+import { ActivityIndicator, Pressable, type PressableProps } from "react-native";
+import { tv, type VariantProps } from "tailwind-variants";
+import ThemedText from "./ThemedText";
+import Icon from "./Icon";
+
+const button = tv({
+  base: "rounded-md self-center items-center justify-center gap-2 active:opacity-80 disabled:opacity-50 px-4 py-2",
+  variants: {
+    variant: {
+      primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300",
+      outline: "border-2 border-gy-primary-500 active:bg-gy-gray-200 hover:bg-gy-gray-200",
+    },
+    fullWidth: {
+      true: "self-stretch",
+      false: "self-center",
+    },
+  },
+  defaultVariants: {
+    variant: "primary",
+    fullWidth: false,
+  },
+});
+
+type Props = PressableProps &
+  VariantProps<typeof button> & {
+    title: string;
+    iconLeft?: string,
+    iconRight?: string,
+    isLoading?: boolean;
+    className?: string;
+  };
+
+export function Button({
+  title,
+  variant,
+  iconLeft,
+  iconRight,
+  isLoading = false,
+  fullWidth,
+  className,
+  disabled,
+  ...props
+}: Props) {
+
+  let color: React.ComponentProps<typeof ThemedText>["color"] = "white";
+
+  switch (variant) {
+    case "primary":
+      color = "white";
+      break;
+    case "outline":
+      color = "primary500";
+      break;
+
+  }
+
+  return (
+    <Pressable
+      className={button({ variant, fullWidth, className })}
+      disabled={disabled || isLoading}
+      {...props}
+    >
+      {isLoading ? (
+        <ActivityIndicator className="size-7.5" color={color === "white" ? "#effbf1" : "#185d23"} />
+      ) : (
+        <>
+          {iconLeft && <Icon name={iconLeft} className="size-6" />}
+          <ThemedText format="button" color={color}>
+            {title}
+          </ThemedText>
+          {iconRight && <Icon name={iconRight} className="size-6" />}
+        </>
+      )}
+    </Pressable>
+  );
+}
+
+
+const iconButton = tv({
+  base: "rounded-full items-center justify-center gap-2 active:opacity-80 disabled:opacity-50",
+  variants: {
+    variant: {
+      primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300",
+      outline: "border-2 border-gy-primary-500 active:bg-gy-gray-200 hover:bg-gy-gray-200",
+      ghost: "rounded-md active:bg-gy-gray-200 hover:bg-gy-gray-200",
+    },
+    size: {
+      md: "size-16",
+      sm: "size-12",
+      xs: "size-8",
+    }
+  },
+  defaultVariants: {
+    variant: "primary",
+    size: "md",
+  },
+});
+
+const icon= tv({
+  base: "",
+  variants: {
+    variant: {
+      primary: "text-gy-white",
+      outline: "text-gy-primary-500",
+      ghost: "text-gy-gray-800",
+    },
+    size: {
+      md: "size-10",
+      sm: "size-9",
+      xs: "size-9",
+    }
+  },
+  defaultVariants: {
+    variant: "primary",
+    size: "md",
+  },
+});
+
+type IconButtonProps = VariantProps<typeof iconButton> & {
+  name: string;
+};
+
+export function IconButton({
+  name,
+  variant,
+  size,
+  ...props
+}: IconButtonProps & PressableProps) {
+  return (
+    <Pressable
+      className={iconButton({ variant, size })}
+      {...props}
+    >
+      <Icon name={name} className={icon({ variant, size })} />
+    </Pressable>
+  );
+}
+
+
