@@ -1,9 +1,13 @@
 // Types pour l'authentification
 export interface User {
   id: string;
+  firstname: string;
+  lastname: string;
+  birthdate: Date;
+  sexe: "M" | "F" | "O";
   email: string;
+  phone: string; // 10 digits
   password: string;
-  name: string;
   createdAt: string;
 }
 
@@ -15,7 +19,8 @@ export interface LoginCredentials {
 export interface RegisterCredentials {
   email: string;
   password: string;
-  name: string;
+  firstname: string;
+  lastname: string;
 }
 
 export interface AuthResponse {
@@ -31,7 +36,11 @@ const mockUsers: User[] = [
     id: "1",
     email: "admin@yannlo.com",
     password: "yannlo",
-    name: "Yann-Loïc",
+    firstname: "Yann-Loïc",
+    lastname: "Ehui",
+    birthdate: new Date("1990-01-01"),
+    sexe: "M",
+    phone: "0612345678",
     createdAt: new Date().toISOString(),
   },
 ];

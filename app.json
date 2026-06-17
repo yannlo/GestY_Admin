@@ -1,27 +1,27 @@
 {
   "expo": {
-    "name": "GestY",
-    "slug": "gesty",
+    "name": "GestY Admin",
+    "slug": "gesty-admin",
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icons/icon.png",
-    "scheme": "gesty",
+    "scheme": "gesty-admin",
     "experiments": {
       "typedRoutes": true
     },
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.yannlo.gesty"
+      "bundleIdentifier": "com.yannlo.gesty_admin"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#185D23",
-        "foregroundImage": "./assets/images/icons/android/icon-foreground.png",
-        "backgroundImage": "./assets/images/icons/android/icon-background.png"
+        "foregroundImage": "./assets/images/icons/android/foreground.png",
+        "backgroundImage": "./assets/images/icons/android/background.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.yannlo.gesty"
+      "package": "com.yannlo.gesty_admin"
     },
     "web": {
       "favicon": "./assets/images/icons/favicon.png",
@@ -41,7 +41,8 @@
             "./assets/fonts/BalooBhai2-ExtraBold.ttf"
           ]
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ]
   }
 }

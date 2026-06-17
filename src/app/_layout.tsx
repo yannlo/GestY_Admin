@@ -1,10 +1,18 @@
 import "@/app/global.css";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
 
 function RootLayout() {
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     router.replace('/settings/setPassword');
+  //   }
+  // }, [isAuthenticated]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

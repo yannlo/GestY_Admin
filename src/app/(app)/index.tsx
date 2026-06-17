@@ -12,10 +12,11 @@ export default function App() {
   return (
     <View className="flex-1 items-center justify-center bg-gy-primary-500">
       <Pressable onPress={() => setIsIconFilled((current) => !current)}>
-        <Icon name="home" fill={isIconFilled} className="text-gy-white size-20" />
+        <Icon name="groups" fill={isIconFilled} className="text-gy-white size-20" />
       </Pressable>
+      
       <Text className="mt-5 text-5xl text-center font-baloo-medium text-gy-white ">
-        Welcome to GestY
+        Welcome to GestY Admin
       </Text>
 
         <Pressable className="mt-10" onPress={() => logout()}>

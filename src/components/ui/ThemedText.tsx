@@ -26,7 +26,20 @@ const themedText = tv({
       link: "font-baloo-medium leading-none underline",
 
       // Alerts
-      alert: "font-baloo font-base leading-normal",
+      alert: "font-baloo leading-normal",
+
+      // Profile
+      profile: "text-4xl font-baloo-semibold leading-none",
+      profileLg: "text-6xl font-baloo-semibold leading-none",
+      profileName: "text-2xl font-baloo-semibold leading-none",
+      profileRole: "text-lg font-baloo-medium leading-none",
+
+      // Settings Menu
+      settingsMenuTitle: "text-lg font-baloo-semibold leading-none",
+
+      // Menu
+      menu: "text-xl font-baloo-medium leading-none",
+
     },
     color: {
       white: "text-gy-white",

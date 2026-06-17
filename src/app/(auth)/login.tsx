@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { View, Image, Pressable, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
-import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { Link } from "expo-router";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
@@ -12,7 +11,6 @@ import Alert from "@/components/ui/Alert";
 
 
 export default function LoginScreen() {
-  const isKeyboardVisible = useKeyboardVisible();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -20,10 +18,7 @@ export default function LoginScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1 bg-gy-primary-500 pt-safe">
         <View className="py-8 px-5 gap-8 items-center">
-          <Image className="h-18 w-auto aspect-22/9" source={require("@/assets/images/logo/white-full-transparent.png")} />
-          {!isKeyboardVisible && (
-            <ThemedText format="heroText" color="primary100">Reprenez votre activité là où vous étiez. Ajoutez vos ventes, enregistrez vos commandes et suivez vos performances.</ThemedText>
-          )}
+          <Image className="h-44 aspect-square" source={require("@/assets/images/logo/white-full-transparent.png")} />
         </View>
 
         <View className="bg-gy-white flex-1 pb-safe pt-10 px-4 rounded-t-2xl items-center gap-9">

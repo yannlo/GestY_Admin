@@ -1,9 +1,18 @@
-import { Tabs } from "expo-router";
+import { StatusBar } from "react-native";
+import { Stack } from "expo-router";
+import MainHeader from "@/components/layout/header/MainHeader";
+import ProfileHeader from "@/components/layout/header/DefaultHeader";
+
 
 export default function () {
   return (
-    <Tabs>
-      <Tabs.Screen name="index" options={{ headerShown: false }} />
-    </Tabs>
+    <>
+      <StatusBar backgroundColor="#effbf1" barStyle="dark-content" />
+      <Stack>
+        <Stack.Screen name="index" options={{ header: () => <MainHeader /> }} />
+        <Stack.Screen name="profile" options={{ headerShown: false }} />
+        <Stack.Screen name="settings" options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 }
