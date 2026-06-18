@@ -87,7 +87,7 @@ function Form() {
           onChangeText={setPassword}
           placeholder="Mot de passe"
         />
-        <Link className="ml-4" href="/">
+        <Link className="ml-4 " href="/">
           <ThemedText format="link" color="gray600">Avez-vous oublié votre mot de passe?</ThemedText>
         </Link>
 

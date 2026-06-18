@@ -303,9 +303,9 @@ type InputVerifiedProps = {
   value?: string;
   placeholder?: string;
   type?: "text" | "phone" | "email" | "password";
-  onChangeText?: (text: string, setVerified: (verified: boolean) => void | undefined) => void;
-  verified?: boolean;
-  onVerify?: (setVerified: (verified: boolean) => void) => void;
+  onChangeText?: (text: string) => void;
+  verified: boolean;
+  onVerify: () => void;
   verifyLabel?: string;
 };
 
@@ -317,28 +317,26 @@ export function InputVerified({
   type,
   onChangeText,
   verified = false,
-  onVerify ,
+  onVerify,
 }: InputVerifiedProps) {
-
-  const [verifiedState, setVerifiedState] = useState<boolean>(verified);
 
 
   if (type === "phone") {
     return (
       <View className="gap-0.5">
         {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
-        <View className={verifiedState ? "relative" : "flex-row items-end gap-4"}>
+        <View className={verified ? "relative" : "flex-row items-end gap-4"}>
           <PhoneInput
             defaultValue={defaultValue}
             value={value}
-            onChangeText={(text) => onChangeText?.(text, setVerifiedState)}
+            onChangeText={(text) => onChangeText?.(text)}
           />
-          {verifiedState ? (
+          {verified ? (
             <View className="absolute right-3 top-1/2 -translate-y-1/2">
               <Icon name="check-circle" className="text-gy-primary-400 size-7" />
             </View>
           ) : (
-            <Button title="Verifier" variant="outline" onPress={() => onVerify?.(setVerifiedState)} />
+            <Button title="Verifier" variant="outline" onPress={onVerify} />
           )}
         </View>
       </View>
@@ -348,22 +346,22 @@ export function InputVerified({
   return (
     <View className="gap-0.5">
       {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
-      <View className={verifiedState ? "relative" : "flex-row items-end gap-4"}>
+      <View className={verified ? "relative" : "flex-row items-end gap-4"}>
         <BaseInput
           defaultValue={defaultValue}
           value={value}
-          onChangeText={(text) => onChangeText?.(text, setVerifiedState)}
+          onChangeText={(text) => onChangeText?.(text)}
           placeholder={placeholder}
           keyboardType={type === "email" ? "email-address" : "default"}
           secureTextEntry={type === "password"}
           autoCapitalize={type === "text" ? "sentences" : "none"}
-          className={verifiedState ? "pr-10" : " flex-1"}
+          className={verified ? "pr-10" : " flex-1"}
         />
-        {verifiedState ? (
+        {verified ? (
           <View className="absolute right-3 top-1/2 -translate-y-1/2">
             <Icon name="check-circle" className="text-gy-primary-400 size-7" />
           </View>
-        ) : (type != "password" ? <Button title="Verifier" variant="outline" onPress={() => onVerify?.(setVerifiedState)} /> : null)}
+        ) : (type != "password" ? <Button title="Verifier" variant="outline" onPress={onVerify} /> : null)}
       </View>
     </View>
   );

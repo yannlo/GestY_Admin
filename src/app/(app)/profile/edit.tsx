@@ -1,7 +1,6 @@
 import "@/app/global.css"
 import { useState, useEffect } from "react";
-import { Platform, Pressable, Text, View } from "react-native";
-import { KeyboardAwareScrollView, KeyboardStickyView } from "react-native-keyboard-controller";
+import { View } from "react-native";
 import { useAuth } from "@/hooks/useAuth";
 import Input, { DateInput, InputVerified, SelectInput } from "@/components/ui/Input";
 import InputGroup from "@/components/layouts/InputGroup";
@@ -20,6 +19,8 @@ export default function () {
     phone: { isVerified: false, value: "" },
   });
 
+    console.log(formData);
+
   // Synchroniser avec les données utilisateur quand elles changent
   useEffect(() => {
     if (user) {
@@ -31,6 +32,7 @@ export default function () {
         email: user.email ?? { isVerified: false, value: "" },
         phone: user.phone ?? { isVerified: false, value: "" },
       });
+      
     }
   }, [user]);
 
@@ -73,19 +75,17 @@ export default function () {
             type="email"
             verified={formData.email.isVerified}
             value={formData.email.value}
-            onChangeText={(text, onVerified) => {
+            onChangeText={(text) => {
               setFormData(prev => ({
                 ...prev,
                 email: { ...prev.email, value: text, isVerified: false }
               }));
-              onVerified(false);
             }}
-            onVerify={(changeVerify) => {
+            onVerify={() => {
               setFormData(prev => ({
                 ...prev,
                 email: { ...prev.email, isVerified: true }
               }));
-              changeVerify(true);
             }}
             placeholder="Email"
           />
@@ -94,19 +94,17 @@ export default function () {
             type="phone"
             verified={formData.phone.isVerified}
             value={formData.phone.value}
-            onChangeText={(raw, onVerified) => {
+            onChangeText={(raw) => {
               setFormData(prev => ({
                 ...prev,
                 phone: { ...prev.phone, value: raw, isVerified: false }
               }));
-              onVerified(false);
             }}
-            onVerify={(changeVerify) => {
+            onVerify={() => {
               setFormData(prev => ({
                 ...prev,
                 phone: { ...prev.phone, isVerified: true }
               }));
-              changeVerify(true);
             }}
           />
         </InputGroup>

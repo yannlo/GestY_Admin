@@ -96,5 +96,6 @@ export default function ThemedText({
   className,
   ...rest
 }: Props) {
+  
   return <Text className={themedText({ format, color, className})} {...rest} />;
 }
