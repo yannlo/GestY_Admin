@@ -1,18 +1,21 @@
 import "@/app/global.css";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { Stack, useRouter } from "expo-router";
+import { BottomSheetProvider } from "@/contexts/BottomSheetContext";
+import { Stack } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 function RootLayout() {
-  const { isAuthenticated } = useAuth();
-  const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuth();
 
   // useEffect(() => {
   //   if (isAuthenticated) {
-  //     router.replace('/settings/setPassword');
+  //     router.replace('/profile/edit');
   //   }
   // }, [isAuthenticated]);
+
+  if (isLoading) return null;
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -29,8 +32,12 @@ function RootLayout() {
 export default function ProviderLayout() {
 
   return (
-    <AuthProvider>
-      <RootLayout />
-    </AuthProvider>
+    <KeyboardProvider>
+      <AuthProvider>
+        <BottomSheetProvider>
+          <RootLayout />
+        </BottomSheetProvider>
+      </AuthProvider>
+    </KeyboardProvider>
   );
 }

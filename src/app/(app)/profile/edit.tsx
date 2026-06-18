@@ -1,82 +1,117 @@
 import "@/app/global.css"
-import { useRef, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { useState, useEffect } from "react";
+import { Platform, Pressable, Text, View } from "react-native";
+import { KeyboardAwareScrollView, KeyboardStickyView } from "react-native-keyboard-controller";
 import { useAuth } from "@/hooks/useAuth";
-import Input, { DateInput, PhoneInput, SelectInput } from "@/components/ui/Input";
-import InputGroup from "@/components/layout/InputGroup";
-import { User } from "@/services/authApi";
+import Input, { DateInput, InputVerified, SelectInput } from "@/components/ui/Input";
+import InputGroup from "@/components/layouts/InputGroup";
 import { Button } from "@/components/ui/Button";
+import { GENDERS } from "@/constants/Enum";
+import LayoutWithBottomButton from "@/components/layouts/layout/LayoutWithBottomButton";
 
 export default function () {
-
-  const { logout, user } = useAuth();
-
-  const { current } = useRef<Omit<User, "password" | "id" | "createdAt">>({
-    firstname: user?.firstname ?? "",
-    lastname: user?.lastname ?? "",
-    birthdate: user?.birthdate ?? new Date(),
-    sexe: user?.sexe ?? "M",
-    email: user?.email ?? "",
-    phone: user?.phone ?? "",
+  const { user } = useAuth();
+  const [formData, setFormData] = useState<Omit<User, "password" | "id" | "createdAt">>({
+    firstname: "",
+    lastname: "",
+    birthdate: new Date(),
+    gender: "M",
+    email: { isVerified: false, value: "" },
+    phone: { isVerified: false, value: "" },
   });
 
-  return (
-    <View className="flex-1 bg-gy-gray-50 pb-safe">
+  // Synchroniser avec les données utilisateur quand elles changent
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstname: user.firstname ?? "",
+        lastname: user.lastname ?? "",
+        birthdate: user.birthdate ?? new Date(),
+        gender: user.gender ?? "M",
+        email: user.email ?? { isVerified: false, value: "" },
+        phone: user.phone ?? { isVerified: false, value: "" },
+      });
+    }
+  }, [user]);
 
-      <ScrollView className="flex-1">
-        <View className="flex-1 pt-10 pb-5">
-          <InputGroup title="Informations personnelles">
+  return (
+    <LayoutWithBottomButton buttons={[
+      <Button title="Enregistrer" fullWidth disabled />
+    ]}>
+      <View className="pt-10">
+        <InputGroup title="Informations personnelles">
           <Input
             label="Mon nom"
             type="text"
-            defaultValue={current.lastname}
-            onChangeText={(text) => { current.lastname = text; }}
+            value={formData.lastname}
+            onChangeText={(text) => setFormData(prev => ({ ...prev, lastname: text }))}
             placeholder="Nom"
           />
           <Input
             label="Mon prénom"
             type="text"
-            defaultValue={current.firstname}
-            onChangeText={(text) => { current.firstname = text; }}
+            value={formData.firstname}
+            onChangeText={(text) => setFormData(prev => ({ ...prev, firstname: text }))}
             placeholder="Prénom"
           />
           <DateInput
             label="Ma date de naissance"
-            value={current.birthdate}
-            onChange={(date) => { current.birthdate = date; }}
+            value={formData.birthdate}
+            onChange={(date) => setFormData(prev => ({ ...prev, birthdate: date }))}
           />
           <SelectInput
             label="Sexe"
-            options={[
-              { label: "Homme", value: "M" },
-              { label: "Femme", value: "F" },
-              { label: "Autre", value: "O" },
-            ]}
-            value={current.sexe}
-            onChange={(val) => { current.sexe = val; }}
+            options={GENDERS}
+            value={formData.gender}
+            onChange={(val) => setFormData(prev => ({ ...prev, gender: val as GenderValue }))}
           />
         </InputGroup>
 
         <InputGroup title="Informations de connexion">
-          <Input
+          <InputVerified
             label="Mon email"
             type="email"
-            defaultValue={current.email}
-            onChangeText={(text) => { current.email = text; }}
+            verified={formData.email.isVerified}
+            value={formData.email.value}
+            onChangeText={(text, onVerified) => {
+              setFormData(prev => ({
+                ...prev,
+                email: { ...prev.email, value: text, isVerified: false }
+              }));
+              onVerified(false);
+            }}
+            onVerify={(changeVerify) => {
+              setFormData(prev => ({
+                ...prev,
+                email: { ...prev.email, isVerified: true }
+              }));
+              changeVerify(true);
+            }}
             placeholder="Email"
           />
-          <PhoneInput
+          <InputVerified
             label="Mon téléphone"
-            defaultValue={current.phone}
-            onChange={(raw) => { current.phone = raw; }}
+            type="phone"
+            verified={formData.phone.isVerified}
+            value={formData.phone.value}
+            onChangeText={(raw, onVerified) => {
+              setFormData(prev => ({
+                ...prev,
+                phone: { ...prev.phone, value: raw, isVerified: false }
+              }));
+              onVerified(false);
+            }}
+            onVerify={(changeVerify) => {
+              setFormData(prev => ({
+                ...prev,
+                phone: { ...prev.phone, isVerified: true }
+              }));
+              changeVerify(true);
+            }}
           />
         </InputGroup>
-        </View>
-      </ScrollView>
-
-      <View className="px-10 py-4 border-t border-gy-gray-200">
-        <Button title="Enregistrer" fullWidth disabled />
       </View>
-    </View>
+    </LayoutWithBottomButton>
+
   );
 }

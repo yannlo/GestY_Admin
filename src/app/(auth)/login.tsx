@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState, useCallback } from "react";
 import { View, Image, Pressable, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import ThemedText from "@/components/ui/ThemedText";
 import Alert from "@/components/ui/Alert";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 
 
@@ -14,41 +15,49 @@ export default function LoginScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      <View
         className="flex-1 bg-gy-primary-500 pt-safe">
         <View className="py-8 px-5 gap-8 items-center">
           <Image className="h-44 aspect-square" source={require("@/assets/images/logo/white-full-transparent.png")} />
         </View>
 
-        <View className="bg-gy-white flex-1 pb-safe pt-10 px-4 rounded-t-2xl items-center gap-9">
-          <ThemedText format="heroTitle" color="black">Connexion</ThemedText>
-          <View className="self-stretch gap-8" >
-            <Form />
-            <SocialButtons />
-          </View>
+        <View className="bg-gy-white flex-1 pb-safe pt-10 rounded-t-2xl items-stretch">
+          <KeyboardAwareScrollView
+            className=" flex-1"
+            contentContainerClassName="flex-1 px-4 items-center gap-9"
+            keyboardShouldPersistTaps="handled"
+            bottomOffset={8}
+            bounces={false}
+          >
+            <ThemedText format="heroTitle" color="black">Connexion</ThemedText>
+            <View className="self-stretch gap-8">
+              <Form />
+              <SocialButtons />
+            </View>
+          </KeyboardAwareScrollView>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
 
 function Form() {
-  const { current } = useRef({ email: "", password: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | false>(false);
   const { login } = useAuth();
   const router = useRouter();
 
-  const handleLogin = async () => {
-    if (!current.email || !current.password) {
+  const handleLogin = useCallback(async () => {
+    if (!email || !password) {
       setError("Veuillez remplir tous les champs");
       return;
     }
 
     setIsLoading(true);
-    setError(false)
-    const result = await login({ email: current.email, password: current.password });
+    setError(false);
+    const result = await login({ email, password });
     setIsLoading(false);
 
     if (result.success) {
@@ -56,7 +65,7 @@ function Form() {
     } else {
       setError(result.error || "Une erreur est survenue");
     }
-  };
+  }, [email, password, login, router]);
 
   return <View className="gap-6">
 
@@ -67,19 +76,15 @@ function Form() {
       {/* Email */}
       <Input
         type="email"
-        defaultValue={current.email}
-        onChangeText={(text) => {
-          current.email = text;
-        }}
+        value={email}
+        onChangeText={setEmail}
         placeholder="Email ou numéro de téléphone"
       />
       <View className="gap-2">
         <Input
           type="password"
-          defaultValue={current.password}
-          onChangeText={(text) => {
-            current.password = text
-          }}
+          value={password}
+          onChangeText={setPassword}
           placeholder="Mot de passe"
         />
         <Link className="ml-4" href="/">

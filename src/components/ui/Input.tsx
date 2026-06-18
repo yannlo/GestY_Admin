@@ -3,34 +3,35 @@ import { Animated, Modal, Platform, Pressable, ScrollView, Text, TextInput, View
 import Icon from "./Icon";
 import DateTimePicker, { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import ThemedText from "./ThemedText";
+import { Button } from "./Button";
 
 const inputClassName =
   "h-12 font-baloo text-lg leading-none self-stretch border text-gy-black border-gy-gray-300 rounded-md pl-4 pt-2 pb-2 w-full placeholder:text-gy-gray-500";
 
 
+// Default
 type InputProps = {
   label?: string;
   defaultValue?: string;
+  value?: string;
   placeholder?: string;
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password" | "phone";
   onChangeText?: (text: string) => void;
 };
 
-type DateInputProps = {
-  label?: string;
-  value?: Date;
-  onChange?: (date: Date) => void;
-  placeholder?: string;
-};
+export default function Input({ label, defaultValue, value, onChangeText, type, placeholder }: InputProps) {
 
-export default function Input({ label, defaultValue, onChangeText, type, placeholder }: InputProps) {
 
+  if(type == "phone"){
+    return <PhoneInput label={label} defaultValue={defaultValue} value={value} onChangeText={onChangeText}  />
+  }
 
   return (
     <View className="gap-0.5">
       {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
       <BaseInput
         defaultValue={defaultValue}
+        value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         keyboardType={type === "email" ? "email-address" : "default"}
@@ -43,12 +44,45 @@ export default function Input({ label, defaultValue, onChangeText, type, placeho
 }
 
 
+// Base
 type BaseInputProps = TextInputProps & {
   defaultValue?: string;
+  value?: string;
   onChangeText?: (text: string) => void;
   className?: string;
 };
 
+function BaseInput({ defaultValue, value: controlledValue, onChangeText, className, ...props }: BaseInputProps) {
+  const isControlled = controlledValue !== undefined;
+  const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+
+  const displayValue = isControlled ? controlledValue : internalValue;
+
+  return (
+    <TextInput
+      value={displayValue}
+      onChangeText={(text) => {
+        if (!isControlled) {
+          setInternalValue(text);
+        }
+        onChangeText?.(text);
+      }}
+      className={[inputClassName, className].filter(Boolean).join(" ")}
+      placeholderTextColor="#56675c"
+      {...props}
+    />
+  );
+}
+
+
+
+// Date
+type DateInputProps = {
+  label?: string;
+  value?: Date;
+  onChange?: (date: Date) => void;
+  placeholder?: string;
+};
 
 export function DateInput({ label, value, onChange, placeholder = "JJ/MM/AAAA" }: DateInputProps) {
   const [date, setDate] = useState<Date | undefined>(value);
@@ -93,7 +127,12 @@ export function DateInput({ label, value, onChange, placeholder = "JJ/MM/AAAA" }
           value={date ?? new Date()}
           mode="date"
           display="spinner"
-          onChange={handleChange}
+          onValueChange={(_, selected) => {
+            if (selected) {
+              setDate(selected);
+              onChange?.(selected);
+            }
+          }}
           locale="fr-FR"
         />
       )}
@@ -101,35 +140,45 @@ export function DateInput({ label, value, onChange, placeholder = "JJ/MM/AAAA" }
   );
 }
 
+
+// Phone
 type PhoneInputProps = {
   label?: string;
   defaultValue?: string;
-  onChange?: (raw: string) => void;
+  value?: string;
+  onChangeText?: (raw: string) => void;
 };
 
-export function PhoneInput({ label, defaultValue, onChange }: PhoneInputProps) {
+function PhoneInput({ label, defaultValue, value: controlledValue, onChangeText }: PhoneInputProps) {
   const format = (raw: string) =>
     raw.replace(/(\d{2})(?=\d)/g, "$1 ").trim();
 
-  const [display, setDisplay] = useState(
+  const isControlled = controlledValue !== undefined;
+  const [internalDisplay, setInternalDisplay] = useState(
     defaultValue ? format(defaultValue.replace(/\D/g, "").slice(0, 10)) : ""
   );
 
+  const displayValue = isControlled
+    ? format((controlledValue ?? "").replace(/\D/g, "").slice(0, 10))
+    : internalDisplay;
+
   const handleChange = (text: string) => {
     const digits = text.replace(/\D/g, "").slice(0, 10);
-    setDisplay(format(digits));
-    onChange?.(digits);
+    if (!isControlled) {
+      setInternalDisplay(format(digits));
+    }
+    onChangeText?.(digits);
   };
 
   return (
-    <View className="gap-0.5">
+    <View className="gap-0.5 flex-1">
       {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
       <TextInput
-        value={display}
+        value={displayValue}
         onChangeText={handleChange}
         keyboardType="phone-pad"
         maxLength={14}
-        placeholder="XX XX XX XX XX"
+        placeholder="01 02 03 04 05"
         placeholderTextColor="#56675c"
         className={inputClassName}
       />
@@ -137,6 +186,10 @@ export function PhoneInput({ label, defaultValue, onChange }: PhoneInputProps) {
   );
 }
 
+
+
+
+// Select
 type SelectOption<T extends string = string> = {
   label: string;
   value: T;
@@ -185,7 +238,7 @@ export function SelectInput<T extends string = string>({ label, placeholder = "S
           <Text className={selected ? "font-baloo text-lg text-gy-black py-1.5" : "font-baloo text-lg text-gy-gray-500"}>
             {selected?.label ?? placeholder}
           </Text>
-          <Icon name={open ? "expand-less" : "expand-more"} className="text-gy-gray-500 size-6" />
+          <Icon name={open ? "expand-less" : "expand-more"} className="text-gy-gray-500 size-8" />
         </View>
       </Pressable>
 
@@ -241,19 +294,77 @@ export function SelectInput<T extends string = string>({ label, placeholder = "S
   );
 }
 
-function BaseInput({ defaultValue, onChangeText, className, ...props }: BaseInputProps) {
-  const [value, setValue] = useState(defaultValue ?? "");
+
+// Verified
+
+type InputVerifiedProps = {
+  label?: string;
+  defaultValue?: string;
+  value?: string;
+  placeholder?: string;
+  type?: "text" | "phone" | "email" | "password";
+  onChangeText?: (text: string, setVerified: (verified: boolean) => void | undefined) => void;
+  verified?: boolean;
+  onVerify?: (setVerified: (verified: boolean) => void) => void;
+  verifyLabel?: string;
+};
+
+export function InputVerified({
+  label,
+  defaultValue,
+  value,
+  placeholder,
+  type,
+  onChangeText,
+  verified = false,
+  onVerify ,
+}: InputVerifiedProps) {
+
+  const [verifiedState, setVerifiedState] = useState<boolean>(verified);
+
+
+  if (type === "phone") {
+    return (
+      <View className="gap-0.5">
+        {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
+        <View className={verifiedState ? "relative" : "flex-row items-end gap-4"}>
+          <PhoneInput
+            defaultValue={defaultValue}
+            value={value}
+            onChangeText={(text) => onChangeText?.(text, setVerifiedState)}
+          />
+          {verifiedState ? (
+            <View className="absolute right-3 top-1/2 -translate-y-1/2">
+              <Icon name="check-circle" className="text-gy-primary-400 size-7" />
+            </View>
+          ) : (
+            <Button title="Verifier" variant="outline" onPress={() => onVerify?.(setVerifiedState)} />
+          )}
+        </View>
+      </View>
+    );
+  }
 
   return (
-    <TextInput
-      value={value}
-      onChangeText={(text) => {
-        setValue(text);
-        onChangeText?.(text);
-      }}
-      className={[inputClassName, className].filter(Boolean).join(" ")}
-      placeholderTextColor="#56675c"
-      {...props}
-    />
+    <View className="gap-0.5">
+      {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
+      <View className={verifiedState ? "relative" : "flex-row items-end gap-4"}>
+        <BaseInput
+          defaultValue={defaultValue}
+          value={value}
+          onChangeText={(text) => onChangeText?.(text, setVerifiedState)}
+          placeholder={placeholder}
+          keyboardType={type === "email" ? "email-address" : "default"}
+          secureTextEntry={type === "password"}
+          autoCapitalize={type === "text" ? "sentences" : "none"}
+          className={verifiedState ? "pr-10" : " flex-1"}
+        />
+        {verifiedState ? (
+          <View className="absolute right-3 top-1/2 -translate-y-1/2">
+            <Icon name="check-circle" className="text-gy-primary-400 size-7" />
+          </View>
+        ) : (type != "password" ? <Button title="Verifier" variant="outline" onPress={() => onVerify?.(setVerifiedState)} /> : null)}
+      </View>
+    </View>
   );
 }

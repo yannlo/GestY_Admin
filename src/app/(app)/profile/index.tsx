@@ -5,7 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "expo-router";
 import ThemedText from "@/components/ui/ThemedText";
-import { SettingsMenuLine } from "@/components/layout/menu/SettingsMenu";
+import { SettingsMenuLine } from "@/components/layouts/menu/SettingsMenu";
 
 export default function () {
 
@@ -14,7 +14,7 @@ export default function () {
   return (
     <ScrollView className="flex-1 bg-gy-gray-50 pb-safe" contentContainerClassName="flex-1 items-center justify-center">
       <View className="flex-1 w-full py-8" >
-        <SettingsMenuLine href="/settings/auth" icon="admin-panel-settings" title="Paramètre de connexion" />
+        <SettingsMenuLine href="/settings/auth" icon="admin-panel-settings" title="Paramètres de connexion" />
       </View>
       <View className="mb-12 gap-8 w-full items-center">
         <Pressable className="w-full active:bg-gy-gray-200" onPress={logout}>

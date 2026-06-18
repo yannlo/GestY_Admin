@@ -1,7 +1,7 @@
 import { StatusBar } from "react-native";
 import { Stack } from "expo-router";
-import DefaultHeader from "@/components/layout/header/DefaultHeader";
-import ProfileHeader from "@/components/layout/header/ProfileHeader";
+import DefaultHeader from "@/components/layouts/header/DefaultHeader";
+import ProfileHeader from "@/components/layouts/header/ProfileHeader";
 
 
 export default function () {

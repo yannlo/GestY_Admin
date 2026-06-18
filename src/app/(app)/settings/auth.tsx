@@ -4,7 +4,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { Icon } from "@/components/ui/Icon";
 import { useAuth } from "@/hooks/useAuth";
 import ThemedText from "@/components/ui/ThemedText";
-import { SettingsMenu, SettingsMenuLine, SettingsMenuLineStatus, SettingsMenuLineToggle } from "@/components/layout/menu/SettingsMenu";
+import { SettingsMenu, SettingsMenuLine, SettingsMenuLineStatus, SettingsMenuLineToggle } from "@/components/layouts/menu/SettingsMenu";
 
 export default function () {
 

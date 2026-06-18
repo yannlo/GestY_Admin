@@ -1,10 +1,9 @@
 import { StatusBar } from "react-native";
 import { Stack } from "expo-router";
-import MainHeader from "@/components/layout/header/MainHeader";
-import ProfileHeader from "@/components/layout/header/DefaultHeader";
+import MainHeader from "@/components/layouts/header/MainHeader";
 
 
-export default function () {
+export default function AppLayout() {
   return (
     <>
       <StatusBar backgroundColor="#effbf1" barStyle="dark-content" />

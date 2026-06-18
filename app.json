@@ -12,7 +12,7 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.yannlo.gesty_admin"
+      "bundleIdentifier": "com.yannlo.gestyAdmin"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +21,7 @@
         "backgroundImage": "./assets/images/icons/android/background.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.yannlo.gesty_admin"
+      "package": "com.yannlo.gestyAdmin"
     },
     "web": {
       "favicon": "./assets/images/icons/favicon.png",

@@ -9,7 +9,7 @@ const button = tv({
   variants: {
     variant: {
       primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300 disabled:hover:bg-gy-gray-600 disabled:active:bg-gy-gray-600 disabled:bg-gy-gray-600",
-      outline: "border-2 border-gy-primary-500 active:bg-gy-primary-200 hover:bg-gy-primary-200 disabled:border-gy-gray-600 disabled:bg-gy-gray-200  disabled:active:bg-gy-gray-200 disabled:hover:bg-gy-gray-200",
+      outline: "outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-primary-200 hover:bg-gy-primary-200 disabled:outline-gy-gray-600 disabled:bg-gy-gray-200 disabled:active:bg-gy-gray-200 disabled:hover:bg-gy-gray-200",
     },
     fullWidth: {
       true: "self-stretch",
@@ -82,7 +82,7 @@ const iconButton = tv({
   variants: {
     variant: {
       primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300",
-      outline: "border-2 border-gy-primary-500 active:bg-gy-gray-200 hover:bg-gy-gray-200",
+      outline: "outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-gray-200 hover:bg-gy-gray-200",
       ghost: "rounded-md active:bg-gy-gray-200 hover:bg-gy-gray-200",
     },
     size: {

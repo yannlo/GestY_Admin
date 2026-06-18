@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback, useMemo } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { login as apiLogin, logout as apiLogout, getCurrentUser as apiGetCurrentUser, User, LoginCredentials } from "@/services/authApi";
+import { login as apiLogin, logout as apiLogout, getCurrentUser as apiGetCurrentUser } from "@/services/authApi";
 
 interface AuthContextType {
   user: User | null;
@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = useCallback(async (credentials: LoginCredentials) => {
     const response = await apiLogin(credentials);
     
     if (response.success && response.user && response.token) {
@@ -53,24 +53,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     
     return { success: false, error: response.error };
-  };
+  }, []);
 
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     await apiLogout();
     setUser(null);
     setToken(null);
     await AsyncStorage.removeItem("auth_token");
-  };
+  }, []);
 
-  const value: AuthContextType = {
+  const value = useMemo<AuthContextType>(() => ({
     user,
     token,
     isLoading,
     isAuthenticated: !!user,
     login,
     logout,
-  };
+  }), [user, token, isLoading, login, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
