@@ -4,6 +4,7 @@ import { Button, IconButton } from "../../ui/Button";
 import Profile from "../../ui/Profile";
 import ThemedText from "../../ui/ThemedText";
 import { useAuth } from "@/hooks/useAuth";
+import { ROLES } from "@/constants/Enum";
 
 export default function ProfileHeader() {
   const router = useRouter();

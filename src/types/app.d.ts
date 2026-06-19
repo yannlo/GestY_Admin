@@ -1,5 +1,7 @@
 interface User {
   id: string;
+  role: RoleValue;
+  business: Business|null;
   firstname: string;
   lastname: string;
   birthdate: Date;
@@ -8,6 +10,10 @@ interface User {
   phone: AuthData; // 10 digits
   password: string;
   createdAt: string;
+}
+
+interface Business {
+  name : string
 }
 
 type AuthData = {

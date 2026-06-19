@@ -3,6 +3,8 @@ const mockUsers: User[] = [
   {
     id: "1",
     email: { isVerified: true, value: "admin@yannlo.com" },
+    business: null,
+    role: "admin",
     password: "yannlo",
     firstname: "Yann-Loïc",
     lastname: "Ehui",

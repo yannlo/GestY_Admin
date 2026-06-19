@@ -10,7 +10,7 @@ import LayoutWithBottomButton from "@/components/layouts/layout/LayoutWithBottom
 
 export default function () {
   const { user } = useAuth();
-  const [formData, setFormData] = useState<Omit<User, "password" | "id" | "createdAt">>({
+  const [formData, setFormData] = useState<Omit<User,"role" | "business" | "password" | "id" | "createdAt">>({
     firstname: "",
     lastname: "",
     birthdate: new Date(),
@@ -18,8 +18,6 @@ export default function () {
     email: { isVerified: false, value: "" },
     phone: { isVerified: false, value: "" },
   });
-
-    console.log(formData);
 
   // Synchroniser avec les données utilisateur quand elles changent
   useEffect(() => {

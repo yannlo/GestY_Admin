@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
-import { View, Image, Pressable, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
+import { View, Image, Pressable, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
-import { Link } from "expo-router";
+import Link from "@/components/ui/Link";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import ThemedText from "@/components/ui/ThemedText";
@@ -87,8 +87,8 @@ function Form() {
           onChangeText={setPassword}
           placeholder="Mot de passe"
         />
-        <Link className="ml-4 " href="/">
-          <ThemedText format="link" color="gray600">Avez-vous oublié votre mot de passe?</ThemedText>
+        <Link className="ml-4 shrink self-start" href="/forgetPassword">
+          Avez-vous oublié votre mot de passe?
         </Link>
 
       </View>

@@ -1,9 +1,7 @@
 import { View } from "react-native";
-import { Link, NativeStackHeaderProps, useRouter } from "expo-router";
-import { Button, IconButton } from "../../ui/Button";
-import Profile from "../../ui/Profile";
+import { NativeStackHeaderProps, useRouter } from "expo-router";
+import { IconButton } from "../../ui/Button";
 import ThemedText from "../../ui/ThemedText";
-import { useAuth } from "@/hooks/useAuth";
 
 export default function DefaultHeader({ options: { title } }: NativeStackHeaderProps) {
   const router = useRouter();

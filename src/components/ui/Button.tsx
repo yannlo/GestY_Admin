@@ -78,17 +78,18 @@ export function Button({
 
 
 const iconButton = tv({
-  base: "rounded-full items-center justify-center gap-2 active:opacity-80 disabled:opacity-50",
+  base: "rounded-full border border-gy-gray-200 items-center justify-center gap-2 active:opacity-80 disabled:opacity-50",
   variants: {
     variant: {
       primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300",
       outline: "outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-gray-200 hover:bg-gy-gray-200",
-      ghost: "rounded-md active:bg-gy-gray-200 hover:bg-gy-gray-200",
+      ghost: "rounded-md active:bg-gy-gray-200 hover:bg-gy-gray-200 border-0",
     },
     size: {
+      lg: "size-20",
       md: "size-16",
       sm: "size-12",
-      xs: "size-8",
+      xs: "size-10",
     }
   },
   defaultVariants: {
@@ -106,6 +107,7 @@ const icon= tv({
       ghost: "text-gy-gray-800",
     },
     size: {
+      lg: "size-14",
       md: "size-10",
       sm: "size-9",
       xs: "size-8",

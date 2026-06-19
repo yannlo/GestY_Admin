@@ -1,7 +1,7 @@
 import { Text, type TextProps } from "react-native";
 import { tv, type VariantProps } from "tailwind-variants";
 
-const themedText = tv({
+export const themedText = tv({
   variants: {
     format: {
       // Hero
@@ -31,6 +31,8 @@ const themedText = tv({
       // Profile
       profile: "text-4xl font-baloo-semibold leading-none",
       profileLg: "text-6xl font-baloo-semibold leading-none",
+
+      profileBusiness: "text-3xl font-baloo-semibold leading-none",
       profileName: "text-2xl font-baloo-semibold leading-none",
       profileRole: "text-lg font-baloo-medium leading-none",
 

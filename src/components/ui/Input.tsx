@@ -6,7 +6,7 @@ import ThemedText from "./ThemedText";
 import { Button } from "./Button";
 
 const inputClassName =
-  "h-12 font-baloo text-lg leading-none self-stretch border text-gy-black border-gy-gray-300 rounded-md pl-4 pt-2 pb-2 w-full placeholder:text-gy-gray-500";
+  "bg-gy-white h-12 font-baloo text-lg leading-none self-stretch border text-gy-black border-gy-gray-300 rounded-md pl-4 pt-2 pb-2 w-full placeholder:text-gy-gray-500";
 
 
 // Default
