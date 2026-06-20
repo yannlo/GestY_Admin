@@ -19,6 +19,7 @@ interface BottomSheetLayoutProps extends PropsWithChildren {
   onTransitionedOut?: () => void;
   bgEnabled?: boolean;
   title?: string;
+  expanded?: boolean;
 }
 
 export default function BottomSheetLayout({
@@ -30,6 +31,7 @@ export default function BottomSheetLayout({
   onTransitionedOut,
   bgEnabled = true,
   title,
+  expanded = false,
   children,
 }: BottomSheetLayoutProps) {
   const positionY = useSharedValue(HIDDEN_OFFSET);
@@ -131,6 +133,14 @@ export default function BottomSheetLayout({
     animatePosition(collapsedOffsetRef.current);
   }, [animatePosition]);
 
+  // Synchronise l'expansion contrôlée depuis le contexte
+  useEffect(() => {
+    if (expanded && !isExpandedRef.current) {
+      expand();
+    } else if (!expanded && isExpandedRef.current) {
+      collapse();
+    }
+  }, [expanded, expand, collapse]);
 
   const panResponder = useRef(
     PanResponder.create({

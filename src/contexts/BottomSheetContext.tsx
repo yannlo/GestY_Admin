@@ -17,6 +17,8 @@ export type BottomSheetContextType = {
   open: (id: string, content: ReactNode, onClose: () => void, bgEnabled: boolean, title?: string) => void;
   close: (id: string) => void;
   closeAll: () => void;
+  isExpanded: boolean;
+  expand: () => void;
 };
 
 // Context
@@ -29,6 +31,7 @@ type BottomSheetProviderProps = { children: ReactNode };
 export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
   const [items, setItems] = useState<BottomSheetItem[]>([]);
   const [closingIds, setClosingIds] = useState<Set<string>>(new Set());
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const closedIdsRef = useRef<Set<string>>(new Set());
   // Ref vers items pour accéder à la valeur courante sans recréer les callbacks
   const itemsRef = useRef(items);
@@ -54,6 +57,7 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
       );
       return;
     }
+    setExpandedId(null);
     const newItem: BottomSheetItem = { id, content, onClose, bgEnabled, title };
     if (current.length > 0) {
       // Un sheet est déjà affiché : on le fait slide down, puis on ajoutera le nouveau
@@ -109,6 +113,7 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
     // Garder seulement le dernier pour l'animer (slide down)
     setItems([last]);
     setClosingIds((prev) => new Set(prev).add(last.id));
+    setExpandedId(null);
   }, []);
 
   // Fermer tous les sheets ouverts lors d'une navigation vers une autre page
@@ -121,6 +126,13 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
 
   // Récupérer le dernier item (le plus récent)
   const active = items.length === 0 ? null : items[items.length - 1];
+  const isExpanded = active != null && expandedId === active.id;
+
+  const expand = useCallback(() => {
+    if (active) {
+      setExpandedId(active.id);
+    }
+  }, [active]);
 
   // Le backdrop est visible si le sheet actif le demande (bgEnabled !== false)
   const showBackdrop = active != null && active.bgEnabled !== false;
@@ -137,8 +149,10 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
       open,
       close,
       closeAll,
+      isExpanded,
+      expand,
     }),
-    [open, close, closeAll]
+    [open, close, closeAll, isExpanded, expand]
   );
 
   return (
@@ -166,6 +180,7 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
           onTransitionedOut={confirmTransitionedOut}
           bgEnabled={active.bgEnabled}
           title={active.title}
+          expanded={isExpanded}
         >
           {active.content}
         </BottomSheetLayout>

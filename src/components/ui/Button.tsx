@@ -9,7 +9,7 @@ const button = tv({
   variants: {
     variant: {
       primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300 disabled:hover:bg-gy-gray-600 disabled:active:bg-gy-gray-600 disabled:bg-gy-gray-600",
-      outline: "outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-primary-200 hover:bg-gy-primary-200 disabled:outline-gy-gray-600 disabled:bg-gy-gray-200 disabled:active:bg-gy-gray-200 disabled:hover:bg-gy-gray-200",
+      outline: "bg-gy-white outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-primary-200 hover:bg-gy-primary-200 disabled:outline-gy-gray-600 disabled:bg-gy-gray-200 disabled:active:bg-gy-gray-200 disabled:hover:bg-gy-gray-200",
     },
     fullWidth: {
       true: "self-stretch",
@@ -82,7 +82,7 @@ const iconButton = tv({
   variants: {
     variant: {
       primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300",
-      outline: "outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-gray-200 hover:bg-gy-gray-200",
+      outline: "bg-gy-white outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-gray-200 hover:bg-gy-gray-200",
       ghost: "rounded-md active:bg-gy-gray-200 hover:bg-gy-gray-200 border-0",
     },
     size: {
@@ -109,7 +109,7 @@ const icon= tv({
     size: {
       lg: "size-14",
       md: "size-10",
-      sm: "size-9",
+      sm: "size-8",
       xs: "size-8",
     }
   },
@@ -121,12 +121,14 @@ const icon= tv({
 
 type IconButtonProps = VariantProps<typeof iconButton> & {
   name: string;
+  filled?: boolean
 };
 
 export function IconButton({
   name,
   variant,
   size,
+  filled= false,
   ...props
 }: IconButtonProps & PressableProps) {
   return (
@@ -134,7 +136,7 @@ export function IconButton({
       className={iconButton({ variant, size })}
       {...props}
     >
-      <Icon name={name} className={icon({ variant, size })} />
+      <Icon name={name} fill={filled} className={icon({ variant, size })} />
     </Pressable>
   );
 }

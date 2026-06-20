@@ -1,37 +1,53 @@
 import "@/app/global.css"
-import { useState } from "react";
-import { View } from "react-native";
-import { Button } from "@/components/ui/Button";
-import BottomSheetDefault from "@/components/ui/BottomSheet/BottomSheetBase";
-import ThemedText from "@/components/ui/ThemedText";
+import { Platform, View } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import { IconButton } from "@/components/ui/Button";
+import { KeyboardStickyView } from "react-native-keyboard-controller";
+import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
+import { useMyLocation } from "@/hooks/useMyLocation";
+
+
+const ABIDJAN_REGION: Region = {
+  latitude: 5.36,
+  longitude: -4.0083,
+  latitudeDelta: 0.25,
+  longitudeDelta: 0.25,
+};
 
 export default function App() {
-  const [showBS1, setShowBS1] = useState(false);
-  const [showBS2, setShowBS2] = useState(false);
-  const [showBS3, setShowBS3] = useState(false);
-
+  const { mapRef, handleUserLocationChange, handleMyLocation } = useMyLocation();
+  const isKeyboardVisibled = useKeyboardVisible();
 
   return (
-    <View className="flex-1 items-center justify-center bg-gy-gray-50">
+    <View className="flex-1 items-center justify-center bg-gy-gray-50 pb-safe">
+      <MapView
+        ref={mapRef}
+        style={{ width: '100%', height: '100%' }}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={ABIDJAN_REGION}
+        userInterfaceStyle="light"
+        showsUserLocation
+        showsMyLocationButton={false}
+        onUserLocationChange={handleUserLocationChange}
+      />
+      <View className="absolute top-0 bottom-0 justify-between items-center right-7 mb-safe pt-10 pb-16">
+        <IconButton variant="outline" name="search" size="sm" onPress={() => { }} />
 
-      <Button title="Ouvrir le sheet" onPress={() => setShowBS1(true)} />
+        <KeyboardStickyView
+          className={`${isKeyboardVisibled ? "pb-4" : ""}`}
+          offset={{ closed: 0, opened: Platform.OS === "ios" ? 16 : 0 }}
+          
+        >
+        <View className="items-center justify-center gap-6">
+          <IconButton variant="outline" name="myLocation" size="sm" onPress={handleMyLocation} />
+          <IconButton name="add" size="lg" onPress={() => { }} />
+        </View>
 
-      <BottomSheetDefault visible={showBS1} onClose={() => setShowBS1(false)} title="Options 1">
-        <ThemedText className="px-6 py-3">Contenu du bottom sheet</ThemedText>
-        <Button title="Open BS 2" onPress={() => setShowBS2(true)} className="mb-50" />
-        <Button title="Fermer" onPress={() => setShowBS1(false)} />
-      </BottomSheetDefault>
 
-      <BottomSheetDefault visible={showBS2} onClose={() => setShowBS2(false)} title="Options 2">
-        <ThemedText className="px-6 py-3">Contenu du bottom sheet</ThemedText>
-        <Button title="Open BS 3" onPress={() => setShowBS3(true)} className="mb-20" />
-        <Button title="Fermer" onPress={() => setShowBS2(false)} />
-      </BottomSheetDefault>
+        </KeyboardStickyView>
+      </View>
 
-      <BottomSheetDefault visible={showBS3} onClose={() => setShowBS3(false)} bgVisible={false}>
-        <ThemedText className="px-6 py-3">Contenu du bottom sheet</ThemedText>
-        <Button title="Fermer" onPress={() => setShowBS3(false)} />
-      </BottomSheetDefault>
+
 
     </View>
   );

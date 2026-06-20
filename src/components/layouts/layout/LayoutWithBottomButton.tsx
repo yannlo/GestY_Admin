@@ -31,7 +31,7 @@ export default function ({ children, buttons }: LayoutWithBottomButtonProps) {
         onLayout={(e) => setStickyHeight(e.nativeEvent.layout.height+8)}
       >
         {buttons.map((button, index) => (
-          <View key={index} className="px-10 py-4 border-t bg-gy-gray-50 border-gy-gray-200">
+          <View key={index} className="px-10 py-4 border-t bg-gy-white border-gy-gray-200">
             {button}
           </View>
         ))}
