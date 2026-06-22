@@ -10,3 +10,16 @@ export const ROLES: Role[] = [
   { label: "Manager", value: "manager_full" },
   { label: "Vendeur", value: "seller" },
 ];
+
+export const ACTIVITIES: Activity[] = [
+  { label: "Détail", value: "retail" },
+  { label: "Gros", value: "wholesale" },
+  { label: "Transfert", value: "transfer" },
+];
+
+export const OPTIONS: Option[] = [
+  { label: "Paiement différé", value: "deferredPayment" },
+  { label: "Édition des ventes", value: "sellerSaleEditing" },
+  { label: "Gestion des chèques", value: "slateManagement" },
+  { label: "Gestion des consignes", value: "consignmentManagement" },
+];

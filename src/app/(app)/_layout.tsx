@@ -1,6 +1,6 @@
 import { StatusBar } from "react-native";
 import { Stack } from "expo-router";
-import MainHeader from "@/components/layouts/header/MainHeader";
+import MainHeader from "@/components/layouts/Header/MainHeader";
 
 
 export default function AppLayout() {
@@ -11,6 +11,7 @@ export default function AppLayout() {
         <Stack.Screen name="index" options={{ header: () => <MainHeader /> }} />
         <Stack.Screen name="profile" options={{ headerShown: false }} />
         <Stack.Screen name="settings" options={{ headerShown: false }} />
+        <Stack.Screen name="business" options={{ headerShown: false }} />
       </Stack>
     </>
   );

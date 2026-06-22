@@ -1,4 +1,4 @@
-import DefaultHeader from "@/components/layouts/header/DefaultHeader";
+import DefaultHeader from "@/components/layouts/Header/DefaultHeader";
 import { Stack } from "expo-router";
 
 export default function () {

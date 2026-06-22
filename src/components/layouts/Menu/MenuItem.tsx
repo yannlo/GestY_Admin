@@ -1,35 +1,19 @@
 import { View, Pressable, PressableProps } from 'react-native'
-import { PropsWithChildren, useState } from 'react'
 import ThemedText from '@/components/ui/ThemedText'
 import { useRouter, type LinkProps } from 'expo-router'
 import Icon from '@/components/ui/Icon'
 import Toggle from '@/components/ui/Toggle'
 
-interface SettingsMenuProps extends PropsWithChildren {
-    title?: string
-}
-export function SettingsMenu({ title, children }: SettingsMenuProps) {
-    return (
-        <View className="w-full mb-8">
-            {title && <View className="px-8 mb-2">
-                <ThemedText format="strong" color="gray600">{title}</ThemedText>
-            </View>}
-            <View className="w-full gap-0">
-                {children}
-            </View>
 
-        </View>
-    )
-}
-
-interface SettingsMenuLineProps {
+interface MenuItemProps {
     title: string
     href?: LinkProps['href']
     onPress?: PressableProps['onPress']
     icon?: string
 }
 
-export function SettingsMenuLine({ title, icon, href, onPress }: SettingsMenuLineProps) {
+
+export function MenuItem({ title, icon, href, onPress }: MenuItemProps) {
     const router = useRouter();
     return (
         <Pressable className="w-full active:bg-gy-gray-200" onPress={onPress || (href ? () => router.push(href as any) : undefined)}>
@@ -42,29 +26,39 @@ export function SettingsMenuLine({ title, icon, href, onPress }: SettingsMenuLin
 }
 
 
-interface SettingsMenuLineToggleProps extends SettingsMenuLineProps {
+interface MenuItemToggleProps extends Omit<MenuItemProps, 'icon'> {
     isToggled: boolean
     isToggleDisabled?: boolean
 }
 
-export function SettingsMenuLineToggle({ title, href, onPress, isToggled, isToggleDisabled }: SettingsMenuLineToggleProps) {
+export function MenuItemToggle({ title, href, onPress, isToggled, isToggleDisabled }: MenuItemToggleProps) {
     const router = useRouter();
+    const handleChange: PressableProps["onPress"] = (...params) => {
+        if (isToggleDisabled) return;
+        if (onPress) {
+            onPress(...params)
+            return;
+        }
+        if (href) {
+            router.push(href)
+        }
+    }
 
     return (
-        <Pressable className="w-full active:bg-gy-gray-200" onPress={onPress || (href ? () => router.push(href as any) : undefined)}>
+        <Pressable className="w-full active:bg-gy-gray-200" onPress={handleChange}>
             <View className="px-8 py-3 w-full flex-row items-center gap-4">
-                <Toggle active={isToggled} disabled={isToggleDisabled} onPress={() => {}} />
+                <Toggle active={isToggled} disabled={isToggleDisabled} onPress={handleChange} />
                 <ThemedText format="menu" color="black">{title}</ThemedText>
             </View>
         </Pressable>
     );
 }
 
-interface SettingsMenuLineStatusProps extends SettingsMenuLineProps {
+interface MenuItemStatusProps extends MenuItemProps {
     enabled: boolean
 }
 
-export function SettingsMenuLineStatus({ title, href, onPress, enabled }: SettingsMenuLineStatusProps) {
+export function MenuItemStatus({ title, href, onPress, enabled }: MenuItemStatusProps) {
     const router = useRouter();
     return (
         <Pressable className="w-full active:bg-gy-gray-200" onPress={onPress || (href ? () => router.push(href as any) : undefined)}>

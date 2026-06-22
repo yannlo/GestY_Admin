@@ -3,13 +3,15 @@ import { ActivityIndicator, Pressable, type PressableProps } from "react-native"
 import { tv, type VariantProps } from "tailwind-variants";
 import ThemedText from "./ThemedText";
 import Icon from "./Icon";
+import { COLORS } from "@/constants/colors";
 
 const button = tv({
-  base: "rounded-md self-center items-center justify-center gap-2 active:opacity-80 px-4 py-2",
+  base: "rounded-md flex-row self-center items-center justify-center gap-2 active:opacity-80 px-4 py-2",
   variants: {
     variant: {
       primary: "bg-gy-primary-500 active:bg-gy-primary-300 hover:bg-gy-primary-300 disabled:hover:bg-gy-gray-600 disabled:active:bg-gy-gray-600 disabled:bg-gy-gray-600",
       outline: "bg-gy-white outline outline-2 outline-gy-primary-500 outline-offset-[-2px] active:bg-gy-primary-200 hover:bg-gy-primary-200 disabled:outline-gy-gray-600 disabled:bg-gy-gray-200 disabled:active:bg-gy-gray-200 disabled:hover:bg-gy-gray-200",
+      ghost: "bg-transparent active:bg-gy-gray-200 hover:bg-gy-gray-200 disabled:bg-transparent disabled:opacity-50",
     },
     fullWidth: {
       true: "self-stretch",
@@ -21,6 +23,13 @@ const button = tv({
     fullWidth: false,
   },
 });
+
+const buttonIcon=tv({
+   base: "size-7",
+  variants: {
+    color: COLORS,
+  }
+})
 
 type Props = PressableProps &
   VariantProps<typeof button> & {
@@ -52,6 +61,9 @@ export function Button({
     case "outline":
       color = disabled ? "gray600" : "primary500";
       break;
+    case "ghost":
+      color = disabled ? "gray600" : "gray900";
+      break;
 
   }
 
@@ -65,11 +77,11 @@ export function Button({
         <ActivityIndicator className="size-7.5" color={color === "white" ? "#effbf1" : "#185d23"} />
       ) : (
         <>
-          {iconLeft && <Icon name={iconLeft} className="size-6" />}
+          {iconLeft && <Icon name={iconLeft} className={buttonIcon({ color})} /> }
           <ThemedText format="button" color={color}>
             {title}
           </ThemedText>
-          {iconRight && <Icon name={iconRight} className="size-6" />}
+          {iconRight && <Icon name={iconRight} className={buttonIcon({ color})} />}
         </>
       )}
     </Pressable>

@@ -36,7 +36,7 @@ export default function Toggle({ active, disabled = false, onPress }: ToggleProp
 
   useEffect(() => {
     translateX.value = withTiming(active ? TRAVEL : 0, { duration: 200 });
-  }, [active]);
+  }, [active, translateX]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     position: "absolute",
@@ -50,7 +50,7 @@ export default function Toggle({ active, disabled = false, onPress }: ToggleProp
 
   return (
     <Pressable
-      onPress={onPress}
+      onPress={!disabled ? onPress : undefined}
       disabled={disabled}
       className={track({ active, disabled })}
       style={{ width: TRACK_WIDTH, height: 24 }}

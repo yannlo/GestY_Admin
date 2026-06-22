@@ -6,37 +6,23 @@ import Input, { DateInput, InputVerified, SelectInput } from "@/components/ui/In
 import InputGroup from "@/components/layouts/InputGroup";
 import { Button } from "@/components/ui/Button";
 import { GENDERS } from "@/constants/Enum";
-import LayoutWithBottomButton from "@/components/layouts/layout/LayoutWithBottomButton";
+import LayoutWithBottomButton from "@/components/layouts/Layout/LayoutWithBottomButtonScrollable";
+import { DEFAULT_USER } from "@/constants/default";
 
 export default function () {
   const { user } = useAuth();
-  const [formData, setFormData] = useState<Omit<User,"role" | "business" | "password" | "id" | "createdAt">>({
-    firstname: "",
-    lastname: "",
-    birthdate: new Date(),
-    gender: "M",
-    email: { isVerified: false, value: "" },
-    phone: { isVerified: false, value: "" },
-  });
+  const [formData, setFormData] = useState<UserForm>(DEFAULT_USER);
 
   // Synchroniser avec les données utilisateur quand elles changent
   useEffect(() => {
     if (user) {
-      setFormData({
-        firstname: user.firstname ?? "",
-        lastname: user.lastname ?? "",
-        birthdate: user.birthdate ?? new Date(),
-        gender: user.gender ?? "M",
-        email: user.email ?? { isVerified: false, value: "" },
-        phone: user.phone ?? { isVerified: false, value: "" },
-      });
-      
+      setFormData(user);
     }
   }, [user]);
 
   return (
     <LayoutWithBottomButton buttons={[
-      <Button title="Enregistrer" fullWidth disabled />
+      <Button key="save" title="Enregistrer" fullWidth disabled />
     ]}>
       <View className="pt-10">
         <InputGroup title="Informations personnelles">

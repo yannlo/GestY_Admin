@@ -1,6 +1,9 @@
-import React, { createContext, useState, useEffect, useCallback, useMemo } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useCallback, useMemo } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { login as apiLogin, logout as apiLogout, getCurrentUser as apiGetCurrentUser } from "@/services/authApi";
+
+const TOKEN_KEY = "auth_token";
 
 interface AuthContextType {
   user: User | null;
@@ -14,58 +17,68 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  // Charger l'utilisateur au démarrage
-  useEffect(() => {
-    loadStoredAuth();
-  }, []);
+  const { data: token, isLoading: isLoadingToken } = useQuery<string | null>({
+    queryKey: ["authToken"],
+    queryFn: async () => {
+      const stored = await AsyncStorage.getItem(TOKEN_KEY);
+      return stored;
+    },
+    staleTime: Infinity,
+  });
 
-  const loadStoredAuth = async () => {
-    try {
-      const storedToken = await AsyncStorage.getItem("auth_token");
-      if (storedToken) {
-        const currentUser = await apiGetCurrentUser(storedToken);
-        if (currentUser) {
-          setUser(currentUser);
-          setToken(storedToken);
-        } else {
-          await AsyncStorage.removeItem("auth_token");
-        }
+  const { data: user, isLoading: isLoadingUser } = useQuery<User | null>({
+    queryKey: ["currentUser", token],
+    queryFn: async () => {
+      if (!token) return null;
+      const currentUser = await apiGetCurrentUser(token);
+      if (!currentUser) {
+        await AsyncStorage.removeItem(TOKEN_KEY);
       }
-    } catch (error) {
-      console.error("Error loading auth:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      return currentUser;
+    },
+    enabled: !!token,
+    staleTime: Infinity,
+  });
+
+  const { mutateAsync: loginMutate } = useMutation({
+    mutationFn: apiLogin,
+    onSuccess: async (response) => {
+      if (response.success && response.token) {
+        await AsyncStorage.setItem(TOKEN_KEY, response.token);
+        queryClient.setQueryData(["authToken"], response.token);
+        queryClient.setQueryData(["currentUser", response.token], response.user ?? null);
+        queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      }
+    },
+  });
+
+  const { mutateAsync: logoutMutate } = useMutation({
+    mutationFn: apiLogout,
+    onSuccess: async () => {
+      await AsyncStorage.removeItem(TOKEN_KEY);
+      queryClient.setQueryData(["authToken"], null);
+      queryClient.setQueryData(["currentUser"], null);
+    },
+  });
 
   const login = useCallback(async (credentials: LoginCredentials) => {
-    const response = await apiLogin(credentials);
-    
-    if (response.success && response.user && response.token) {
-      setUser(response.user);
-      setToken(response.token);
-      await AsyncStorage.setItem("auth_token", response.token);
-      return { success: true };
-    }
-    
-    return { success: false, error: response.error };
-  }, []);
+    const response = await loginMutate(credentials);
 
+    if (response.success) return { success: true };
+    return { success: false, error: response.error };
+  }, [loginMutate]);
 
   const logout = useCallback(async () => {
-    await apiLogout();
-    setUser(null);
-    setToken(null);
-    await AsyncStorage.removeItem("auth_token");
-  }, []);
+    await logoutMutate();
+  }, [logoutMutate]);
+
+  const isLoading = isLoadingToken || (isLoadingUser && !user);
 
   const value = useMemo<AuthContextType>(() => ({
-    user,
-    token,
+    user: user ?? null,
+    token: token ?? null,
     isLoading,
     isAuthenticated: !!user,
     login,

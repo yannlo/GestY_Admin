@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import BottomSheetBase from './BottomSheetBase';
 
@@ -8,7 +8,7 @@ type Props = {
     visible: boolean;
     onClose: () => void;
 }
-const SearchBottomSheet = ({ searchText, onChangeSearchText, visible, onClose }: Props) => {
+const SearchBottomSheet = ({ searchText: _searchText, onChangeSearchText: _onChangeSearchText, visible, onClose }: Props) => {
     return (
         <BottomSheetBase visible={visible} bgVisible={false} onClose={onClose}>
             <View className="py-8">

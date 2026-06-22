@@ -1,11 +1,10 @@
 import "@/app/global.css"
-import { useRef, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
-import { useAuth } from "@/hooks/useAuth";
-import Input, { DateInput, SelectInput } from "@/components/ui/Input";
+import { useRef } from "react";
+import { View } from "react-native";
+import Input from "@/components/ui/Input";
 import InputGroup from "@/components/layouts/InputGroup";
 import { Button } from "@/components/ui/Button";
-import LayoutWithBottomButton from "@/components/layouts/layout/LayoutWithBottomButton";
+import LayoutWithBottomButton from "@/components/layouts/Layout/LayoutWithBottomButtonScrollable";
 
 interface SetPassword {
   current: string,
@@ -14,8 +13,6 @@ interface SetPassword {
 }
 
 export default function () {
-
-  const { logout, user } = useAuth();
 
   const { current } = useRef<SetPassword>({
     current: "",
@@ -26,7 +23,7 @@ export default function () {
   return (
 
     <LayoutWithBottomButton buttons={[
-      <Button title="Enregistrer" fullWidth disabled />
+      <Button key="save" title="Enregistrer" fullWidth disabled />
     ]}>
       <View className="flex-1 pt-10 pb-5">
         <InputGroup title="Informations personnelles">

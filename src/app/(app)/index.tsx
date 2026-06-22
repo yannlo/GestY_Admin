@@ -1,10 +1,10 @@
-import "@/app/global.css"
 import { Platform, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { IconButton } from "@/components/ui/Button";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
 import { useKeyboardVisible } from "@/hooks/useKeyboardVisible";
 import { useMyLocation } from "@/hooks/useMyLocation";
+import { router } from "expo-router";
 
 
 const ABIDJAN_REGION: Region = {
@@ -30,7 +30,7 @@ export default function App() {
         showsMyLocationButton={false}
         onUserLocationChange={handleUserLocationChange}
       />
-      <View className="absolute top-0 bottom-0 justify-between items-center right-7 mb-safe pt-10 pb-16">
+      <View className="absolute top-0 bottom-0 justify-between items-end right-7 mb-safe pt-7 pb-16">
         <IconButton variant="outline" name="search" size="sm" onPress={() => { }} />
 
         <KeyboardStickyView
@@ -40,7 +40,7 @@ export default function App() {
         >
         <View className="items-center justify-center gap-6">
           <IconButton variant="outline" name="myLocation" size="sm" onPress={handleMyLocation} />
-          <IconButton name="add" size="lg" onPress={() => { }} />
+          <IconButton name="add" size="lg" onPress={() => {router.push("/business/add") }} />
         </View>
 
 
