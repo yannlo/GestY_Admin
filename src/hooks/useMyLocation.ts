@@ -4,11 +4,13 @@ import * as Location from "expo-location";
 
 type UseMyLocationOptions = {
   defaultRegion?: Region;
+  showMyLocationByDefault?: boolean;
 };
 
 export const useMyLocation = (options?: UseMyLocationOptions) => {
   const mapRef = useRef<MapView>(null);
   const [userLocation, setUserLocation] = useState<Region | null>(null);
+  const showByDefaultRef = useRef(options?.showMyLocationByDefault !== false);
 
   useEffect(() => {
     let isMounted = true;
@@ -25,7 +27,9 @@ export const useMyLocation = (options?: UseMyLocationOptions) => {
           longitudeDelta: 0.02,
         };
         setUserLocation(region);
-        mapRef.current?.animateToRegion(region, 500);
+        if (showByDefaultRef.current) {
+          mapRef.current?.animateToRegion(region, 500);
+        }
       } catch {
         // Permission denied or location unavailable: keep default
       }

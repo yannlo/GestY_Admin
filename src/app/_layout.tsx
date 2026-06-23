@@ -14,7 +14,7 @@ function RootLayout() {
 
   // useEffect(() => {
   //   if (isAuthenticated) {
-  //     router.replace('/business/add/account');
+  //     router.replace( '/profile/edit');
   //   }
   // }, [isAuthenticated]);
 

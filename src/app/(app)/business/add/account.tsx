@@ -11,7 +11,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBusiness } from "@/services/businessApi";
 import Alert from "@/components/ui/Alert";
 import ThemedText from "@/components/ui/ThemedText";
-import { ErrorMessage } from "@/components/ui/Input/ErrorMessage";
 
 
 const getAccountValidationRules = (account: BusinessForm["account"]): ValidationRules<BusinessForm["account"]> => ({
@@ -40,9 +39,10 @@ export default function () {
   const queryClient = useQueryClient();
   const { mutate: submitBusiness, isPending, isError, error: submitError } = useMutation({
     mutationFn: createBusiness,
-    onSuccess: () => {
+    onSuccess: (business) => {
       queryClient.invalidateQueries({ queryKey: ["businesses"] });
-      router.push("/");
+      router.dismissAll();
+      router.replace({ pathname: "/", params: { businessId: business.id } });
     },
   });
 

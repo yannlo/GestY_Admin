@@ -144,6 +144,7 @@ export function MultiSelectInput<T extends string = string>({
         <Modal visible transparent animationType="none" onRequestClose={closeDropdown}>
           <Pressable style={{ flex: 1 }} onPress={closeDropdown} />
           <Animated.View
+            className="bg-gy-white rounded-md border border-gy-gray-200 overflow-hidden"
             style={[
               dropdownStyle,
               {
@@ -152,16 +153,11 @@ export function MultiSelectInput<T extends string = string>({
                 left: dropdownLayout.x,
                 width: dropdownLayout.width,
                 maxHeight: 208,
-                backgroundColor: "#ffffff",
-                borderRadius: 8,
-                borderWidth: 1,
-                borderColor: "#c4d4c9",
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.1,
+                shadowOpacity: 0.08,
                 shadowRadius: 8,
                 elevation: 6,
-                overflow: "hidden",
               },
             ]}
           >
@@ -174,16 +170,8 @@ export function MultiSelectInput<T extends string = string>({
               {filtered.map((option, index) => (
                 <Pressable
                   key={option.value}
-                  style={({ pressed }) => ({
-                    paddingHorizontal: 16,
-                    paddingVertical: 12,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    backgroundColor: pressed ? "#effbf1" : "transparent",
-                    borderTopWidth: index === 0 ? 0 : 1,
-                    borderTopColor: "#e5f0e8",
-                  })}
+                  className={`px-4 py-3 flex-row justify-between items-center ${index !== 0 ? "border-t border-gy-gray-100" : ""}`}
+                  style={({ pressed }) => ({ backgroundColor: pressed ? "#dde9df" : "transparent" })}
                   onPress={() => {
                     toggle(option.value);
                     setQuery("");
@@ -195,14 +183,8 @@ export function MultiSelectInput<T extends string = string>({
               ))}
               {showCreate && (
                 <Pressable
-                  style={({ pressed }) => ({
-                    paddingHorizontal: 16,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: pressed ? "#effbf1" : "transparent",
-                    borderTopWidth: filtered.length === 0 ? 0 : 1,
-                    borderTopColor: "#e5f0e8",
-                  })}
+                  className={`px-4 py-3 flex-row items-center ${filtered.length !== 0 ? "border-t border-gy-gray-100" : ""}`}
+                  style={({ pressed }) => ({ backgroundColor: pressed ? "#dde9df" : "transparent" })}
                   onPress={() => {
                     addNew(query);
                     closeDropdown();

@@ -25,10 +25,10 @@ export const COLORS =  {
   gray800: "text-gy-gray-800",
   gray900: "text-gy-gray-900",
 
-  productRed: "text-gy-product-red",
-  productYellow: "text-gy-product-yellow",
-  productBlack: "text-gy-product-black",
-  productGreen: "text-gy-product-green",
+  productRed: "text-gy-state-red",
+  productYellow: "text-gy-state-yellow",
+  productBlack: "text-gy-state-black",
+  productGreen: "text-gy-state-green",
 
   alertInfo: "text-gy-alert-info",
   alertSuccess: "text-gy-alert-success",

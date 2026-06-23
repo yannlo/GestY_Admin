@@ -23,7 +23,7 @@ const StyledMsIcon = styled(MsIcon, {
 
 function toMsIconKey(name: string, fill: boolean): RoundedIconKey {
   const pascal = name
-    .split(/[-_\s]+/)
+    .split(/[-\s]+/)
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join("");

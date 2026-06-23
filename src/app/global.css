@@ -36,10 +36,10 @@
     --color-gy-gray-800: #1c2a20;
     --color-gy-gray-900: #0f1a12;
 
-    --color-gy-product-red: #e20a0a;
-    --color-gy-product-yellow: #f2ba00;
-    --color-gy-product-black: #2c3b31;
-    --color-gy-product-green: #0aa81d;
+    --color-gy-state-red: #e20a0a;
+    --color-gy-state-yellow: #f2ba00;
+    --color-gy-state-black: #2c3b31;
+    --color-gy-state-green: #0aa81d;
 
     --color-gy-alert-info: #CFE8E8;
     --color-gy-alert-success: #D1FFC8;
@@ -71,11 +71,12 @@
     --color-gy-gray-700: #2c3b31;
     --color-gy-gray-800: #1c2a20;
     --color-gy-gray-900: #0f1a12;
+
     
-    --color-gy-product-red: #e20a0a;
-    --color-gy-product-yellow: #f2ba00;
-    --color-gy-product-black: #2c3b31;
-    --color-gy-product-green: #0aa81d;
+    --color-gy-state-red: #e20a0a;
+    --color-gy-state-yellow: #f2ba00;
+    --color-gy-state-black: #2c3b31;
+    --color-gy-state-green: #0aa81d;
 
     --color-gy-alert-info: #CFE8E8;
     --color-gy-alert-success: #D1FFC8;

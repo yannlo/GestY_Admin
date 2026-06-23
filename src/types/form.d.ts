@@ -3,7 +3,7 @@ type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 type Options = OptionValue;
 
 type UserForm = Omit<User,"role" | "business" | "password" | "id" | "createdAt"| "updatedAt">
-type BusinessForm = Omit<Business, "id" | "createdAt" | "updatedAt" | "activities" | "options" | "categories" | "location"> & {
+type BusinessForm = Omit<Business, "id" | "createdAt" | "updatedAt" | "activities" | "options" | "categories" | "location" | "accountNumber" | "productStat" | "transferStat"> & {
   activities: ActivitiesForm;
   options: OptionsForm;
   categories: CategoryForm[];

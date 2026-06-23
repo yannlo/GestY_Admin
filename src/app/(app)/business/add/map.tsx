@@ -9,13 +9,7 @@ import Icon from "@/components/ui/Icon";
 import ThemedText from "@/components/ui/ThemedText";
 import { useFormData } from "@/contexts/FormDataContext";
 import { router } from "expo-router";
-
-const ABIDJAN_REGION: Region = {
-  latitude: 5.36,
-  longitude: -4.0083,
-  latitudeDelta: 0.25,
-  longitudeDelta: 0.25,
-};
+import { ABIDJAN_REGION } from "@/constants/default";
 
 function getRegionCenter(region: Region): LatLng {
   return {

@@ -33,7 +33,9 @@ export const createBusiness = async (data: BusinessForm): Promise<Business> => {
     id,
     categories: data.categories.map((category) => ({
       ...category,
-      id: category.id ?? `category-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+      id:
+        category.id ??
+        `category-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
       createdAt: timestamp,
       updatedAt: timestamp,
     })),
@@ -49,15 +51,31 @@ export const createBusiness = async (data: BusinessForm): Promise<Business> => {
       createdAt: timestamp,
       updatedAt: timestamp,
     },
+    status: "inactive",
     createdAt: timestamp,
     updatedAt: timestamp,
+
+    accountNumber: {
+      owner: 0,
+      manager: 0,
+      seller: 0,
+      total: 0,
+    },
+    productStat: {
+      retail: { available: 0, low: 0, outOfStock: 0, suspended: 0, total: 0 },
+      wholesale: { available: 0, low: 0, outOfStock: 0, suspended: 0, total: 0 },
+    },
+    transferStat: { available: 0, suspended: 0, total: 0 },
   };
 
   mockBusinesses.push(newBusiness);
   return { ...newBusiness };
 };
 
-export const updateBusiness = async (id: string, data: BusinessForm): Promise<Business | null> => {
+export const updateBusiness = async (
+  id: string,
+  data: BusinessForm,
+): Promise<Business | null> => {
   await delay(400);
   const index = mockBusinesses.findIndex((b) => b.id === id);
   if (index === -1) return null;
@@ -68,10 +86,14 @@ export const updateBusiness = async (id: string, data: BusinessForm): Promise<Bu
     location: data.location as LatLng,
     id,
     categories: data.categories.map((category) => {
-      const existing = mockBusinesses[index].categories.find((c) => c.id === category.id);
+      const existing = mockBusinesses[index].categories.find(
+        (c) => c.id === category.id,
+      );
       return {
         ...category,
-        id: category.id ?? `category-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+        id:
+          category.id ??
+          `category-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
         createdAt: existing?.createdAt ?? timestamp,
         updatedAt: timestamp,
       };
@@ -88,8 +110,13 @@ export const updateBusiness = async (id: string, data: BusinessForm): Promise<Bu
       createdAt: mockBusinesses[index].options.createdAt,
       updatedAt: timestamp,
     },
+    status: data.status ?? mockBusinesses[index].status,
     createdAt: mockBusinesses[index].createdAt,
     updatedAt: timestamp,
+
+    accountNumber: mockBusinesses[index].accountNumber,
+    productStat: mockBusinesses[index].productStat,
+    transferStat: mockBusinesses[index].transferStat,
   };
 
   mockBusinesses[index] = updated;

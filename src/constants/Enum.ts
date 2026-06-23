@@ -19,7 +19,26 @@ export const ACTIVITIES: Activity[] = [
 
 export const OPTIONS: Option[] = [
   { label: "Paiement différé", value: "deferredPayment" },
-  { label: "Édition des ventes", value: "sellerSaleEditing" },
-  { label: "Gestion des chèques", value: "slateManagement" },
-  { label: "Gestion des consignes", value: "consignmentManagement" },
+  { label: "Modification de vente par un vendeur", value: "sellerSaleEditing" },
+  { label: "Gestion des consignations", value: "consignmentManagement" },
+  { label: "Gestion des ardoises", value: "slateManagement" },
+];
+
+export const STATUSES: Status[] = [
+  { label: "Actif", value: "active" },
+  { label: "Suspendu", value: "suspended" },
+  { label: "Inactif", value: "inactive" },
+];
+
+export const PRODUCT_STATUES: ProductStatus[] = [
+  { label: "Disponible", value: "available" },
+  { label: "Insuffisant", value: "low" },
+  { label: "En rupture", value: "outOfStock" },
+  { label: "Suspendu", value: "suspended" },
+];
+
+
+export const TRANSFER_STATUES: ProductStatus[] = [
+  { label: "Disponible", value: "available" },
+  { label: "Suspendu", value: "suspended" },
 ];

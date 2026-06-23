@@ -18,7 +18,7 @@ export function BaseInput({ defaultValue, value: controlledValue, onChangeText, 
 
   const displayValue = isControlled ? controlledValue : internalValue;
 
-  const errorClassName = error ? "border-gy-product-red" : "";
+  const errorClassName = error ? "border-gy-state-red" : "";
 
   return (
     <TextInput

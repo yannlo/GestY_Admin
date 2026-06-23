@@ -1,3 +1,4 @@
+import { Region } from "react-native-maps";
 
 const DEFAULT_USER: UserForm = {
   firstname: "",
@@ -6,6 +7,7 @@ const DEFAULT_USER: UserForm = {
   gender: "M",
   email: { isVerified: false, value: "" },
   phone: { isVerified: false, value: "" },
+  status: "active",
 };
 
 const DEFAULT_OPTIONS: OptionsForm = {
@@ -28,6 +30,7 @@ const DEFAULT_BUSINESS : BusinessForm = {
   location: null,
   activities: DEFAULT_ACTIVITIES,
   options: DEFAULT_OPTIONS,
+  status: "active",
   account: {
     role: null,
     email: "",
@@ -36,5 +39,13 @@ const DEFAULT_BUSINESS : BusinessForm = {
 } 
 
 
+const ABIDJAN_REGION: Region = {
+  latitude: 5.36,
+  longitude: -4.0083,
+  latitudeDelta: 0.25,
+  longitudeDelta: 0.25,
+};
 
-export { DEFAULT_USER, DEFAULT_BUSINESS }
+
+
+export { DEFAULT_USER, DEFAULT_BUSINESS, ABIDJAN_REGION }

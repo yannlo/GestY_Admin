@@ -19,6 +19,8 @@ export type BottomSheetContextType = {
   closeAll: () => void;
   isExpanded: boolean;
   expand: () => void;
+  collapsedHeight: number;
+  setCollapsedHeight: (height: number) => void;
 };
 
 // Context
@@ -32,6 +34,7 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
   const [items, setItems] = useState<BottomSheetItem[]>([]);
   const [closingIds, setClosingIds] = useState<Set<string>>(new Set());
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [collapsedHeight, setCollapsedHeight] = useState(0);
   const closedIdsRef = useRef<Set<string>>(new Set());
   // Ref vers items pour accéder à la valeur courante sans recréer les callbacks
   const itemsRef = useRef(items);
@@ -151,10 +154,12 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
       closeAll,
       isExpanded,
       expand,
+      collapsedHeight,
+      setCollapsedHeight,
     }),
-    [open, close, closeAll, isExpanded, expand]
+    [open, close, closeAll, isExpanded, expand, collapsedHeight, setCollapsedHeight]
   );
-
+  
   return (
     <BottomSheetContext.Provider value={value}>
       {children}
@@ -181,6 +186,7 @@ export function BottomSheetProvider({ children }: BottomSheetProviderProps) {
           bgEnabled={active.bgEnabled}
           title={active.title}
           expanded={isExpanded}
+          onCollapsedHeightChange={setCollapsedHeight}
         >
           {active.content}
         </BottomSheetLayout>

@@ -20,6 +20,7 @@ interface BottomSheetLayoutProps extends PropsWithChildren {
   bgEnabled?: boolean;
   title?: string;
   expanded?: boolean;
+  onCollapsedHeightChange?: (height: number) => void;
 }
 
 export default function BottomSheetLayout({
@@ -32,6 +33,7 @@ export default function BottomSheetLayout({
   bgEnabled = true,
   title,
   expanded = false,
+  onCollapsedHeightChange,
   children,
 }: BottomSheetLayoutProps) {
   const positionY = useSharedValue(HIDDEN_OFFSET);
@@ -55,7 +57,7 @@ export default function BottomSheetLayout({
       targetY,
       { damping: 18, stiffness: 140, mass: 1 },
       (finished) => {
-        "worklet";
+        'worklet';
         if (finished && callback) runOnJS(callback)();
       }
     );
@@ -69,6 +71,7 @@ export default function BottomSheetLayout({
     const clampedNatural = Math.min(natural, MAX_COLLAPSED_HEIGHT);
     const offset = Math.min(Math.max(SHEET_HEIGHT - clampedNatural, EXPANDED_OFFSET), HIDDEN_OFFSET);
     collapsedOffsetRef.current = offset;
+    onCollapsedHeightChange?.(SHEET_HEIGHT - offset);
     if (!hasShownRef.current) {
       // Attendre les DEUX mesures (chrome + contenu) avant le slide-up initial,
       // sinon on anime vers une position erronée puis on ré-anime → saccade + taps annulés
@@ -84,7 +87,7 @@ export default function BottomSheetLayout({
       // Le contenu a changé pendant qu'on est en collapsed → ajuster
       animatePosition(offset);
     }
-  }, [animatePosition]);
+  }, [animatePosition, onCollapsedHeightChange]);
 
   const onChromeLayout = useCallback((e: LayoutChangeEvent) => {
     chromeHeightRef.current = e.nativeEvent.layout.height;
@@ -103,18 +106,21 @@ export default function BottomSheetLayout({
     if (isClosing && !isClosingRef.current) {
       isClosingRef.current = true;
       positionY.value = withTiming(HIDDEN_OFFSET, { duration: 200 }, (finished) => {
-        "worklet";
-        if (finished) runOnJS(onClosed)(sheetId);
+        'worklet';
+        if (finished) {
+          runOnJS(onClosed)(sheetId);
+          if (onCollapsedHeightChange) runOnJS(onCollapsedHeightChange)(0);
+        }
       });
     }
-  }, [isClosing, positionY, onClosed, sheetId]);
+  }, [isClosing, positionY, onClosed, sheetId, onCollapsedHeightChange]);
 
   // Transition sheet→sheet : slide down avant l'arrivée du suivant
   useEffect(() => {
     if (isTransitioningOut && !isTransitioningOutRef.current) {
       isTransitioningOutRef.current = true;
       positionY.value = withTiming(HIDDEN_OFFSET, { duration: 200 }, (finished) => {
-        "worklet";
+        'worklet';
         if (finished && onTransitionedOut) runOnJS(onTransitionedOut)();
       });
     }

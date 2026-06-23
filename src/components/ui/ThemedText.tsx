@@ -43,6 +43,12 @@ export const themedText = tv({
       // Menu
       menu: "text-xl font-baloo-medium leading-none",
 
+      //BottomSheet
+
+      bottomSheetTitle: "text-2xl font-baloo-semibold leading-none",
+      bottomSheetLabel: "text-xl font-baloo-semibold leading-none",
+      bottomSheetLabelLite: "text-xl font-baloo-medium leading-none",
+
     },
     color: COLORS,
   },

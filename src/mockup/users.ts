@@ -11,6 +11,7 @@ export const mockUsers: User[] = [
     birthdate: new Date("1990-01-01"),
     gender: "M",
     phone: { isVerified: true, value: "0612345678" },
+    status: "active",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
