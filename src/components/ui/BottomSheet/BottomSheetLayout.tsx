@@ -1,5 +1,5 @@
 import "@/app/global.css";
-import { PropsWithChildren, useRef, useCallback, useEffect, useState } from "react";
+import React, { PropsWithChildren, useRef, useCallback, useEffect, useState } from "react";
 import { View, PanResponder, Dimensions, ScrollView, LayoutChangeEvent } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming, runOnJS } from "react-native-reanimated";
 import ThemedText from "../ThemedText";
@@ -18,9 +18,11 @@ interface BottomSheetLayoutProps extends PropsWithChildren {
   isTransitioningOut?: boolean;
   onTransitionedOut?: () => void;
   bgEnabled?: boolean;
-  title?: string;
+  header?: React.ReactNode | string;
   expanded?: boolean;
   onCollapsedHeightChange?: (height: number) => void;
+  onCollapse?: () => void;
+  onExpand?: () => void;
 }
 
 export default function BottomSheetLayout({
@@ -31,9 +33,11 @@ export default function BottomSheetLayout({
   isTransitioningOut = false,
   onTransitionedOut,
   bgEnabled = true,
-  title,
+  header,
   expanded = false,
   onCollapsedHeightChange,
+  onCollapse,
+  onExpand,
   children,
 }: BottomSheetLayoutProps) {
   const positionY = useSharedValue(HIDDEN_OFFSET);
@@ -42,6 +46,10 @@ export default function BottomSheetLayout({
   const isTransitioningOutRef = useRef(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+  const onCollapseRef = useRef(onCollapse);
+  onCollapseRef.current = onCollapse;
+  const onExpandRef = useRef(onExpand);
+  onExpandRef.current = onExpand;
 
   // Mesure de la hauteur naturelle du contenu pour calculer l'offset collapsed
   const chromeHeightRef = useRef(0); // poignée + titre
@@ -105,13 +113,15 @@ export default function BottomSheetLayout({
   useEffect(() => {
     if (isClosing && !isClosingRef.current) {
       isClosingRef.current = true;
+      onCollapsedHeightChange?.(0);
       positionY.value = withTiming(HIDDEN_OFFSET, { duration: 200 }, (finished) => {
         'worklet';
         if (finished) {
           runOnJS(onClosed)(sheetId);
-          if (onCollapsedHeightChange) runOnJS(onCollapsedHeightChange)(0);
         }
       });
+    } else if (!isClosing && isClosingRef.current) {
+      isClosingRef.current = false;
     }
   }, [isClosing, positionY, onClosed, sheetId, onCollapsedHeightChange]);
 
@@ -123,6 +133,8 @@ export default function BottomSheetLayout({
         'worklet';
         if (finished && onTransitionedOut) runOnJS(onTransitionedOut)();
       });
+    } else if (!isTransitioningOut && isTransitioningOutRef.current) {
+      isTransitioningOutRef.current = false;
     }
   }, [isTransitioningOut, positionY, onTransitionedOut]);
 
@@ -140,7 +152,10 @@ export default function BottomSheetLayout({
   }, [animatePosition]);
 
   // Synchronise l'expansion contrôlée depuis le contexte
+  // Pendant une fermeture/transition, on ignore les changements d'expansion
+  // pour éviter que le sheet ne repasse en collapsed au lieu de sortir par le bas
   useEffect(() => {
+    if (isClosingRef.current || isTransitioningOutRef.current) return;
     if (expanded && !isExpandedRef.current) {
       expand();
     } else if (!expanded && isExpandedRef.current) {
@@ -164,9 +179,9 @@ export default function BottomSheetLayout({
         const { dy, vy } = gestureState;
 
         if (isExpandedRef.current) {
-          // Déjà expand : vers le bas → collapse
+          // Déjà expand : vers le bas → fermer complètement
           if (dy > DRAG_THRESHOLD || vy > 0.5) {
-            collapse();
+            onBackdropPress();
           } else {
             expand();
           }
@@ -174,6 +189,7 @@ export default function BottomSheetLayout({
           // Collapsed : vers le haut → expand, vers le bas → closeAll
           if (dy < -DRAG_THRESHOLD || vy < -0.5) {
             expand();
+            onExpandRef.current?.();
           } else if (dy > DRAG_THRESHOLD || vy > 0.5) {
             onBackdropPress();
           } else {
@@ -203,13 +219,13 @@ export default function BottomSheetLayout({
           <View className="items-center pt-4 pb-2">
             <View className="w-32 h-1 rounded-full bg-gy-gray-300" />
           </View>
-          {title && (
+          {typeof header === "string" ? (
             <View className="py-3 items-center">
-              <ThemedText format="settingsMenuTitle" color="black">
-                {title}
+              <ThemedText format="bottomSheetTitle" color="black">
+                {header}
               </ThemedText>
             </View>
-          )}
+          ) : header}
         </View>
         <ScrollView
           ref={scrollViewRef}

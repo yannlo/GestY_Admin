@@ -8,7 +8,8 @@ import { useFormData } from "@/contexts/FormDataContext";
 import { ErrorMessage } from "@/components/ui/Input/ErrorMessage";
 import { router } from "expo-router";
 import LoadingScreen from "@/components/layouts/LoadingScreen";
-import { useFormValidation, type ValidationRules } from "@/hooks/useFormValidation";
+import { useZodForm } from "@/hooks/useZodForm";
+import { createBusinessBaseSchema } from "@/schemas/businessSchema";
 import LocationInput from "@/components/pages/businessAdd/LocationInput";
 import OptionsInputGroup from "@/components/pages/businessAdd/OptionsInputGroup";
 import CategoriesInput from "@/components/pages/businessAdd/CategoriesInput";
@@ -20,26 +21,7 @@ const AVAILABLE_ACTIVITIES: Record<ActivityValue, boolean> = {
   transfer: process.env.EXPO_PUBLIC_TRANSFER_IS_AVAILABLE === "true",
 }
 
-
-const VALIDATION_RULES: ValidationRules<BusinessForm> = {
-  name: { required: true, requiredMessage: "Le nom est obligatoire" },
-  categories: {
-    required: true,
-    validate: (cats) => (cats.length === 0 ? "Ajoutez au moins une catégorie" : undefined),
-  },
-  location: {
-    required: true,
-    validate: (loc) => (loc === null ? "Ajoutez une localisation" : undefined),
-  },
-  activities: {
-    validate: (acts) => {
-      const hasActive = (Object.keys(acts) as ActivityValue[]).some(
-        (key) => acts[key] && AVAILABLE_ACTIVITIES[key]
-      );
-      return hasActive ? undefined : "Sélectionnez au moins un type d'activité";
-    },
-  },
-};
+const businessBaseSchema = createBusinessBaseSchema(AVAILABLE_ACTIVITIES);
 
 export default function () {
 
@@ -47,7 +29,7 @@ export default function () {
   const [isFormReady, setIsFormReady] = useState<boolean>(false);
   const putFormToReady = useCallback(() => setIsFormReady(true), []);
 
-  const { getError, validateField, validateAll } = useFormValidation(formData, VALIDATION_RULES);
+  const { getError, validateField, validateAll } = useZodForm(formData, businessBaseSchema);
 
   const handleSubmit = () => {
     if (!validateAll()) return;

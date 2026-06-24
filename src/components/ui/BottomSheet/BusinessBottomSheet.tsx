@@ -8,6 +8,7 @@ import Badge from '../Badge';
 import Icon from '../Icon';
 import DotStatic from '../Dot/DotStatic';
 import { defineDotState } from '@/utils/dot';
+import { ACTIVITY_ICONS } from '@/constants/icons';
 
 type Props = {
     business: Business,
@@ -15,13 +16,7 @@ type Props = {
     onClose: () => void;
     onPress: PressableProps['onPress']
 }
-const BUSSINESS_ACCOUNT_LIMIT = process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_LIMIT || 2 as number
-
-const ACTIVITY_ICONS: { key: ActivityValue; icon: string }[] = [
-    { key: "retail", icon: "shoppingBag" },
-    { key: "wholesale", icon: "Package_2" },
-    { key: "transfer", icon: "simCard" },
-];
+const BUSSINESS_ACCOUNT_LIMIT = Number(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_LIMIT ?? 2)
 
 const BusinessBottomSheet = ({ business, visible, onClose, onPress }: Props) => {
     return (
@@ -66,7 +61,7 @@ const BusinessBottomSheet = ({ business, visible, onClose, onPress }: Props) => 
     )
 }
 
-export default BusinessBottomSheet
+export default React.memo(BusinessBottomSheet)
 
 
 type BusinessBottomSheetItemProps = {

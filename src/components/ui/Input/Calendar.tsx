@@ -94,13 +94,13 @@ export function Calendar({ value, onChange }: CalendarProps) {
     <View className="gap-3">
       {/* Header */}
       <View className="flex-row items-center justify-between">
-        <Pressable onPress={goPrev} className="size-9 items-center justify-center rounded-md active:bg-gy-gray-100">
+        <Pressable onPress={goPrev} className="size-9 items-center justify-center rounded-md active:bg-gy-gray-100 will-change-pressable">
           <Icon name="chevron-left" className="text-gy-gray-600 size-6" />
         </Pressable>
-        <Pressable onPress={cycleView} className="px-3 py-1.5 rounded-md active:bg-gy-gray-100">
+        <Pressable onPress={cycleView} className="px-3 py-1.5 rounded-md active:bg-gy-gray-100 will-change-pressable">
           <Text className="font-baloo-semibold text-base text-gy-black">{headerLabel}</Text>
         </Pressable>
-        <Pressable onPress={goNext} className="size-9 items-center justify-center rounded-md active:bg-gy-gray-100">
+        <Pressable onPress={goNext} className="size-9 items-center justify-center rounded-md active:bg-gy-gray-100 will-change-pressable">
           <Icon name="chevron-right" className="text-gy-gray-600 size-6" />
         </Pressable>
       </View>
@@ -126,7 +126,7 @@ export function Calendar({ value, onChange }: CalendarProps) {
                   <View key={ci} className="flex-1 aspect-square p-0.5">
                     <Pressable
                       onPress={() => onChange?.(cell)}
-                      className={`flex-1 items-center justify-center rounded-md ${
+                      className={`flex-1 items-center justify-center rounded-md will-change-pressable ${
                         selected ? "bg-gy-primary-500" : isToday ? "bg-gy-primary-100" : "active:bg-gy-gray-100"
                       }`}
                     >

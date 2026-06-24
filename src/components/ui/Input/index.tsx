@@ -4,6 +4,7 @@ export { PhoneInput } from "./PhoneInput";
 export { DateInput } from "./DateInput";
 export { SelectInput, type SelectOption } from "./SelectInput";
 export { MultiSelectInput } from "./MultiSelectInput";
+export { SearchInput } from "./SearchInput";
 export { InputVerified } from "./InputVerified";
 export { ToggleInput } from "./ToggleInput";
 export { RadioInput, type RadioOption } from "./RadioInput";

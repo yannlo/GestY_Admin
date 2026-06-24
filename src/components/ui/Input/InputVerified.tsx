@@ -4,6 +4,7 @@ import ThemedText from "../ThemedText";
 import { Button } from "../Button";
 import { BaseInput } from "./BaseInput";
 import { PhoneInput } from "./PhoneInput";
+import { ErrorMessage } from "./ErrorMessage";
 
 type InputVerifiedProps = {
   label?: string;
@@ -15,6 +16,8 @@ type InputVerifiedProps = {
   verified: boolean;
   onVerify: () => void;
   verifyLabel?: string;
+  error?: string;
+  required?: boolean;
 };
 
 export function InputVerified({
@@ -26,16 +29,19 @@ export function InputVerified({
   onChangeText,
   verified = false,
   onVerify,
+  error,
+  required,
 }: InputVerifiedProps) {
   if (type === "phone") {
     return (
       <View className="gap-0.5">
-        {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
+        {label && <ThemedText format="label" color="gray800" className="mx-3">{label}{required ? " *" : ""}</ThemedText>}
         <View className={verified ? "relative" : "flex-row items-end gap-4"}>
           <PhoneInput
             defaultValue={defaultValue}
             value={value}
             onChangeText={(text) => onChangeText?.(text)}
+            error={error}
           />
           {value?.trim().length !== 0 && (
             verified ? (
@@ -53,7 +59,7 @@ export function InputVerified({
 
   return (
     <View className="gap-0.5">
-      {label && <ThemedText format="label" color="gray800" className="mx-3">{label}</ThemedText>}
+      {label && <ThemedText format="label" color="gray800" className="mx-3">{label}{required ? " *" : ""}</ThemedText>}
       <View className={verified ? "relative" : "flex-row items-end gap-4"}>
         <BaseInput
           defaultValue={defaultValue}
@@ -64,6 +70,7 @@ export function InputVerified({
           secureTextEntry={type === "password"}
           autoCapitalize={type === "text" ? "sentences" : "none"}
           className={verified ? "pr-10" : " flex-1"}
+          error={error}
         />
         {verified ? (
           <View className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -71,6 +78,7 @@ export function InputVerified({
           </View>
         ) : (type !== "password" ? <Button title="Verifier" variant="outline" onPress={onVerify} /> : null)}
       </View>
+      <ErrorMessage error={error} />
     </View>
   );
 }

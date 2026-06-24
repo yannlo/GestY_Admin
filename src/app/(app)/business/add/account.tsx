@@ -5,36 +5,18 @@ import InputGroup from "@/components/layouts/InputGroup";
 import Input, { RadioInput } from "@/components/ui/Input";
 import { useFormData } from "@/contexts/FormDataContext";
 import { router } from "expo-router";
-import { useMemo } from "react";
-import { useFormValidation, type ValidationRules } from "@/hooks/useFormValidation";
+import { useZodForm } from "@/hooks/useZodForm";
+import { accountSchema } from "@/schemas/businessSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBusiness } from "@/services/businessApi";
 import Alert from "@/components/ui/Alert";
 import ThemedText from "@/components/ui/ThemedText";
 
 
-const getAccountValidationRules = (account: BusinessForm["account"]): ValidationRules<BusinessForm["account"]> => ({
-  role: { required: true, requiredMessage: "Veuillez sélectionner un type de compte" },
-  email: {
-    validate: (email) => {
-      if (!email && !account.phone) return "Renseignez au moins un email ou un numéro de téléphone";
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Email invalide";
-      return undefined;
-    },
-  },
-  phone: {
-    validate: (phone) => {
-      if (phone && !/^\d{10}$/.test(phone)) return "Numéro de téléphone invalide";
-      return undefined;
-    },
-  },
-});
-
 export default function () {
 
   const { formData, setFormData } = useFormData<BusinessForm>();
-  const VALIDATION_RULES = useMemo(() => getAccountValidationRules(formData.account), [formData.account]);
-  const { getError, validateAll } = useFormValidation(formData.account, VALIDATION_RULES);
+  const { getError, validateAll } = useZodForm(formData.account, accountSchema);
 
   const queryClient = useQueryClient();
   const { mutate: submitBusiness, isPending, isError, error: submitError } = useMutation({

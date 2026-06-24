@@ -1,11 +1,12 @@
 import "@/app/global.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BottomSheetProvider } from "@/contexts/BottomSheetContext";
-import { router, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { View } from "react-native";
+import LoadingScreen from "@/components/layouts/LoadingScreen";
 
 const queryClient = new QueryClient();
 
@@ -18,7 +19,11 @@ function RootLayout() {
   //   }
   // }, [isAuthenticated]);
 
-  if (isLoading) return null;
+  if (isLoading) return (
+    <View className="flex-1 bg-gy-white">
+      <LoadingScreen isLoading={true} />
+    </View>
+  );
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

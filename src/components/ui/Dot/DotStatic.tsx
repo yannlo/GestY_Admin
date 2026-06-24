@@ -6,7 +6,7 @@ type Props = {
 }
 
 
-export default function ({className }: Props) {
+export default function DotStatic({className }: Props) {
 
   return <View className={["size-1.5 rounded-full", className].join(' ')} />
 }

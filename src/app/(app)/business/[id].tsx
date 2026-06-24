@@ -18,10 +18,10 @@ import TransferStateCard from "@/components/ui/Card/Business/TransferStateCard";
 import OptionCard from "@/components/ui/Card/Business/OptionCard";
 
 const MAX_BUSINESS_ACCOUNT: Business['accountNumber'] = {
-  total: parseInt(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_LIMIT || '12'),
-  owner: parseInt(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_OWNER_LIMIT || '7'),
-  manager: parseInt(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_MANAGER_LIMIT || '9'),
-  seller: parseInt(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_SELLER_LIMIT || '32'),
+  total: Number(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_LIMIT ?? 10),
+  owner: Number(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_OWNER_LIMIT ?? 2),
+  manager: Number(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_MANAGER_LIMIT ?? 3),
+  seller: Number(process.env.EXPO_PUBLIC_BUSSINESS_ACCOUNT_SELLER_LIMIT ?? 5),
 }
 
 export default function () {
